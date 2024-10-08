@@ -56,13 +56,25 @@ class _CountryPageState extends State<CountryPage> {
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
                       itemBuilder: (context, i) {
+                        var trip =
+                            (snapshot.data as Map<String, dynamic>)["data"][i];
+                        var tripAttributes = trip["attributes"];
                         return GetTripsOfCountry(
+                          tripId: trip["id"].toString(),
+                          tripDescription:
+                              tripAttributes["description"] ?? "No description",
+                          tripDuration: tripAttributes[
+                              "duration"], // تحويل duration إلى String
+
+                          /*tripId: (snapshot.data
+                              as Map<String, dynamic>)["data"][i]["id"],
+                              
                           tripDescription:
                               (snapshot.data as Map<String, dynamic>)["data"][i]
                                   ["attributes"]["description"],
                           tripDuration:
                               (snapshot.data as Map<String, dynamic>)["data"][i]
-                                  ["attributes"]["duration"],
+                                  ["attributes"]["duration"],*/
                           //tripDuration: (snapshot.data as List<dynamic>)[i]["name"],
                         );
                       },

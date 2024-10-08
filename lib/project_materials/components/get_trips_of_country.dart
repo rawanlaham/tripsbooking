@@ -2,11 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:project1v5/trip/trip_page.dart';
 
 class GetTripsOfCountry extends StatelessWidget {
-  final String? tripId;
+  final String tripId;
   final String? tripDescription;
   final int? tripDuration;
   const GetTripsOfCountry(
-      {super.key, this.tripDescription, this.tripDuration, this.tripId});
+      {super.key,
+      this.tripDescription,
+      this.tripDuration,
+      required this.tripId});
 
   @override
   Widget build(BuildContext context) {
