@@ -19,7 +19,7 @@ class _TripPageState extends State<TripPage> {
     } catch (e) {
       print("GetTripsOfCountry error is: $e");
     }
-  }
+  } //
 
   @override
   Widget build(BuildContext context) {
