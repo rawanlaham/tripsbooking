@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
+import 'package:project1v5/main.dart';
 
 class Crud {
   getRequest(String uri) async {
@@ -20,7 +21,14 @@ class Crud {
   postRequest(String uri, Map data) async {
     await Future.delayed(Duration(seconds: 2));
     try {
-      var response = await http.post(Uri.parse(uri), body: data);
+      var response = await http.post(
+        Uri.parse(uri),
+        body: data,
+        headers: {
+          'Authorization': 'Bearer ${sharedPref.getString("token")}',
+          //'Content-Type': 'application/json',
+        },
+      );
       if (response.statusCode == 200) {
         var responseBody = jsonDecode(response.body);
         return responseBody;

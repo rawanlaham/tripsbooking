@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:project1v5/main.dart';
 import 'package:project1v5/project_materials/constants/linkapi.dart';
 import 'package:project1v5/project_materials/crud.dart';
 import 'package:project1v5/project_materials/valid.dart';
@@ -30,12 +31,16 @@ class _SignUpPageState extends State<SignUpPage> {
           "email": email.text,
           "password": password.text,
         });
+        sharedPref.setString("id", response["data"]["id"].toString());
+        sharedPref.setString("username", response["data"]["name"]);
+        sharedPref.setString("email", response["data"]["email"]);
+        sharedPref.setString("token", response["access_token"]); // تخزين التوكن
         isLoading = false;
         setState(() {});
         Navigator.of(context).pushNamed("home");
       }
     } catch (e) {
-      print("Error: $e");
+      print("Signup Error: $e");
     }
   }
 

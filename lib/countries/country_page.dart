@@ -1,29 +1,36 @@
 import 'package:flutter/material.dart';
-import 'package:project1v5/project_materials/components/get_trips_of_country.dart';
-import 'package:project1v5/project_materials/components/get_trips_of_country_func.dart';
+import 'package:project1v5/project_materials/components/trip_card.dart';
 import 'package:project1v5/project_materials/constants/linkapi.dart';
 import 'package:project1v5/project_materials/crud.dart';
+import 'package:project1v5/project_materials/models/trip_model.dart';
 
 class CountryPage extends StatefulWidget {
-  final String countryName;
-  const CountryPage({super.key, required this.countryName});
+  final TripModel? tripModel;
+  final OneTripModel? oneTripModel;
+
+  ///
+  const CountryPage({super.key, this.tripModel, this.oneTripModel});
 
   @override
   State<CountryPage> createState() => _CountryPageState();
 }
 
 class _CountryPageState extends State<CountryPage> {
-  final NewGetTripsOfCountry newy = NewGetTripsOfCountry();
-
   Crud crud = Crud();
-  getTripsOfCountry() async {
+
+  ///
+  Future<List<TripModel>> getTripsOfCountry() async {
     try {
       var response = await crud.getRequest(linkViewTripsOfCountry);
       //"id": sharedPref.getString("id"), // to show the owned items
-      return response;
+      List<dynamic> data = response['data'];
+      List<TripModel> trips =
+          data.map((item) => TripModel.fromJson(item)).toList();
+      return trips;
     } catch (e) {
       print("GetTripsOfCountry error is: $e");
     }
+    return [];
   }
 
   @override
@@ -33,6 +40,9 @@ class _CountryPageState extends State<CountryPage> {
         future: getTripsOfCountry(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
+            List<TripModel> trips = snapshot.data!;
+
+            ///
             return Scaffold(
               bottomNavigationBar: BottomNavigationBar(
                 items: const [
@@ -45,41 +55,29 @@ class _CountryPageState extends State<CountryPage> {
                 ],
               ),
               appBar: AppBar(
-                title: Text(widget.countryName),
+                title: const Text("this is appBar!"),
               ),
-              body: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    ListView.builder(
-                      itemCount: (snapshot.data as Map<String, dynamic>)["data"]
-                          .length,
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemBuilder: (context, i) {
-                        var trip =
-                            (snapshot.data as Map<String, dynamic>)["data"][i];
-                        var tripAttributes = trip["attributes"];
-                        return GetTripsOfCountry(
-                          tripId: trip["id"].toString(),
-                          tripDescription:
-                              tripAttributes["description"] ?? "No description",
-                          tripDuration: tripAttributes[
-                              "duration"], // تحويل duration إلى String
+              body: Padding(
+                padding: const EdgeInsets.all(24.0),
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      ListView.builder(
+                        itemCount: trips.length,
 
-                          /*tripId: (snapshot.data
-                              as Map<String, dynamic>)["data"][i]["id"],
-                              
-                          tripDescription:
-                              (snapshot.data as Map<String, dynamic>)["data"][i]
-                                  ["attributes"]["description"],
-                          tripDuration:
-                              (snapshot.data as Map<String, dynamic>)["data"][i]
-                                  ["attributes"]["duration"],*/
-                          //tripDuration: (snapshot.data as List<dynamic>)[i]["name"],
-                        );
-                      },
-                    )
-                  ],
+                        ///
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemBuilder: (context, i) {
+                          return TripCard(
+                            tripModel: trips[i],
+                            //oneTripModel: widget.oneTripModel,
+                            ///
+                          );
+                        },
+                      )
+                    ],
+                  ),
                 ),
               ),
             );

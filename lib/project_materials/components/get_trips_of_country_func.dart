@@ -1,4 +1,4 @@
-import 'package:project1v5/project_materials/constants/linkapi.dart';
+/*import 'package:project1v5/project_materials/constants/linkapi.dart';
 import 'package:project1v5/project_materials/crud.dart';
 
 class NewGetTripsOfCountry {
@@ -13,7 +13,7 @@ class NewGetTripsOfCountry {
       print("GetTripsOfCountry error is: $e");
     }
   }
-}
+}*/
 
 
 /*

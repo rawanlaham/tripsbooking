@@ -30,20 +30,26 @@ class _LoginPageState extends State<LoginPage> {
           "email": email.text,
           "password": password.text,
         });
-        isLoading = true;
+        //isLoading = true;
+        isLoading = false;
         setState(() {});
         sharedPref.setString("id", response["data"]["id"].toString());
         sharedPref.setString("username", response["data"]["name"]);
         sharedPref.setString("email", response["data"]["email"]);
+        sharedPref.setString("token", response["token"]); //
         Navigator.of(context).pushNamed("home");
       } catch (e) {
+        isLoading = false;
+        setState(() {
+          // تعيينه إلى false عند حدوث خطأ
+        });
         AwesomeDialog(
-            context: context,
-            title: 'Warning',
-            body: Text(
-                'Email address or password is invalid, or the account is not existing.'))
-          ..show();
-        print("login error: $e");
+                context: context,
+                title: 'Warning',
+                body: const Text(
+                    'Email address or password is invalid, or the account is not existing.'))
+            .show();
+        print("Login Error: $e");
       }
     }
   }

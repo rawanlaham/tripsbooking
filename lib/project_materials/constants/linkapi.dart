@@ -13,13 +13,11 @@ const String linkViewTripsOfCountry = "http://10.0.2.2:8000/api/trips";
 // one trip
 const String linkViewOneTrip = "http://10.0.2.2:8000/api/trip";
 
+// all trips
+const String linkViewTrips = "http://10.0.2.2:8000/api/trips";
 
-/*
-const String linkLogIn = "$linkServerName/auth/login.php";
-//"$linkServerName/auth/signup";
-// Countries
-const String linkViewCountry = "$linkServerName/country/view.php";
-const String linkAddCountry = "$linkServerName/country/add.php";
-const String linkEditCountry = "$linkServerName/country/edit.php";
-const String linkDeleteCountry = "$linkServerName/country/delete.php";
-*/
+// Booking
+const String linkBookTrips = "http://10.0.2.2:8000/api/bookingTrip";
+
+// Feature
+const String linkAddBillingData = "http://10.0.2.2:8000/api/addBillingDetails";

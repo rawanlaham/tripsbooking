@@ -1,11 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:project1v5/main.dart';
-import 'package:project1v5/project_materials/components/get_conutries.dart';
+import 'package:project1v5/project_materials/components/conutry_card.dart';
 import 'package:project1v5/project_materials/constants/linkapi.dart';
 import 'package:project1v5/project_materials/crud.dart';
+import 'package:project1v5/project_materials/models/country_model.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+  final CountryModel? countryModel;
+
+  ///
+
+  const HomePage({super.key, this.countryModel});
+
+  ///
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -14,14 +21,22 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   Crud crud = Crud();
 
-  getCountry() async {
+  ///
+
+  Future<List<CountryModel>> getCountry() async {
+    ///
     try {
       var response = await crud.getRequest(linkViewCountry);
       //"id": sharedPref.getString("id"), // to show the owned items
-      return response;
+      //return response;
+      List<dynamic> data = response['data'];
+      List<CountryModel> countries =
+          data.map((item) => CountryModel.fromJson(item)).toList();
+      return countries;
     } catch (e) {
       print("GetCountry error is: $e");
     }
+    return [];
   }
 
   @override
@@ -42,7 +57,6 @@ class _HomePageState extends State<HomePage> {
       ),
       
       */
-
       appBar: AppBar(
         actions: [
           IconButton(
@@ -69,76 +83,90 @@ class _HomePageState extends State<HomePage> {
           ),
         ],
       ),
-      body: Center(
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Stack(
-                children: [
-                  Image.asset('images/paris.jpg'),
-                  Positioned(
-                    top: 30,
-                    left: 30,
-                    child: SizedBox(
-                      width: 300,
-                      child: TextField(
-                        decoration: InputDecoration(
-                            border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(40)),
-                            filled: true,
-                            fillColor: Colors.white,
-                            hintText: "Where are you going?",
-                            hintStyle: const TextStyle(color: Colors.grey),
-                            prefixIcon: const Icon(Icons.search),
-                            prefixIconColor: Colors.black),
-                      ),
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Stack(
+              children: [
+                Image.asset('images/paris.jpg'),
+                Positioned(
+                  top: 30,
+                  left: 30,
+                  child: SizedBox(
+                    width: 300,
+                    child: TextField(
+                      decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(40)),
+                          filled: true,
+                          fillColor: Colors.white,
+                          hintText: "Where are you going?",
+                          hintStyle: const TextStyle(color: Colors.grey),
+                          prefixIcon: const Icon(Icons.search),
+                          prefixIconColor: Colors.black),
                     ),
                   ),
-                ],
-              ),
-              const Padding(
-                padding: EdgeInsets.only(left: 20, top: 16, bottom: 16),
-                child: Text(
-                  'Popular Countries',
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20),
                 ),
+              ],
+            ),
+            const Padding(
+              padding: EdgeInsets.only(left: 20, top: 16, bottom: 16),
+              child: Text(
+                'Popular Countries',
+                style: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20),
               ),
-              FutureBuilder(
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    return ListView.builder(
-                      itemCount: (snapshot.data as Map<String, dynamic>)["data"]
-                          .length,
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemBuilder: (context, i) {
-                        return GetCountries(
-                          ontap: () {},
-                          countryName: (snapshot.data
-                              as Map<String, dynamic>)["data"][i]["name"],
-                          /*countryName:
-                              "${(snapshot.data as List<dynamic>)[i]["name"]}",*/
-                        );
-                      },
-                    );
-                  }
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  }
-                  return const Center(
-                    child: Text("Is loading..."),
+            ),
+            FutureBuilder(
+              ///
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  List<CountryModel> countries = snapshot.data!;
+
+                  ///
+                  return ListView.builder(
+                    itemCount: countries.length,
+
+                    ///
+                    //itemCount: (snapshot.data as Map<String, dynamic>)["data"].length,
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemBuilder: (context, i) {
+                      return CountryCard(
+                        ontap: () {
+                          /*Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => Trippagetest()));*/
+                        },
+                        countryModel: countries[i],
+
+                        ///
+                        //countryName: country,
+                        /*countryName: (snapshot.data
+                            as Map<String, dynamic>)["data"][i]["name"],
+                            */
+                        /*countryName:
+                            "${(snapshot.data as List<dynamic>)[i]["name"]}",*/
+                      );
+                    },
                   );
-                },
-                future: getCountry(),
-              ),
-            ],
-          ),
+                }
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+                return const Center(
+                  child: Text("Is loading..."),
+                );
+              },
+              future: getCountry(),
+
+              ///
+            ),
+          ],
         ),
       ),
     );
