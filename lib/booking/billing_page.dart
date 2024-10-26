@@ -3,15 +3,18 @@ import 'package:project1v5/main.dart';
 import 'package:project1v5/project_materials/components/custom_form_field.dart';
 import 'package:project1v5/project_materials/constants/linkapi.dart';
 import 'package:project1v5/project_materials/crud.dart';
-import 'package:project1v5/project_materials/models/billing_model.dart';
-import 'package:project1v5/project_materials/models/booking_model.dart';
-import 'package:project1v5/trip/Trippagetest2.dart';
 
 class BillingPage extends StatefulWidget {
-  final BookingModel? bookingModel;
-  final BillingModel? billingModel;
+  // final BookingModel? bookingModel;
+  // final BillingModel? billingModel;
+  // final int bookingId;
 
-  const BillingPage({super.key, this.bookingModel, this.billingModel});
+  const BillingPage({
+    super.key,
+    // required this.bookingId,
+    // this.bookingModel,
+    // this.billingModel
+  });
 
   @override
   State<BillingPage> createState() => _BillingPageState();
@@ -29,40 +32,46 @@ class _BillingPageState extends State<BillingPage> {
   bool isLoading = false;
   Crud crud = Crud();
 
-  sendBookingData3() async {
-    print("bookingModel: ${widget.bookingModel}");
-    print("billingModel: ${widget.billingModel}");
+  sendBookingData4() async {
     String? userId = sharedPref.getString("id");
     String? token = sharedPref.getString("token");
     if (formstate2.currentState!.validate()) {
       setState(() {
         isLoading = true;
       });
-      // print("${widget.bookingModel?.id}");
 
       try {
+        String? bookingId = sharedPref.getString("booking_id");
+        // print("Retrieved booking_id: $bookingId");
+        // print(
+        //     "linkAddBillingData/bookingId:       $linkAddBillingData/$bookingId");
+        // print("bookingId:        $bookingId");
+        print("First Name: ${billingFirstName.text}");
         try {
-          var response = await crud
-              .postRequest("$linkAddBillingData/${widget.bookingModel?.id}", {
-            "first_name": widget.billingModel?.firstName,
-            "last_name": widget.billingModel?.lastName,
-            "phone_number": widget.billingModel?.phoneNumber,
-            "email": widget.billingModel?.email,
-            "address": widget.billingModel?.address,
-            "booking_id": widget.bookingModel?.id
+          var response =
+              await crud.postRequest("$linkAddBillingData/$bookingId", {
+            "first_name": billingFirstName.text,
+            "last_name": billingLastName.text,
+            "phone_number": billingPhoneNumber.text,
+            "email": billingEmail.text,
+            "address": billingAddress.text,
+            "booking_id": bookingId
           });
+          // print("Response status: ${response.statusCode}");
+          // print("Response body: ${response.body}");
         } catch (e) {
-          print("sendBookingData2-1 Error: $e");
+          print("responseError:      $e");
         }
-
+        // print("$linkAddBillingData/${widget.bookingModel?.id}");
+        // print("response:      $response");
         setState(() {
           isLoading = false;
         });
 
-        Navigator.of(context)
-            .push(MaterialPageRoute(builder: (context) => Trippagetest2()));
-      } catch (e) {
-        print("sendBookingData2 Error: $e");
+        // Navigator.of(context)
+        //     .push(MaterialPageRoute(builder: (context) => Trippagetest2()));
+      } catch (e, h) {
+        print("sendBookingData2 Error: $e + $h");
       }
     }
   }
@@ -70,6 +79,7 @@ class _BillingPageState extends State<BillingPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -116,13 +126,12 @@ class _BillingPageState extends State<BillingPage> {
                     shadowColor: Colors.black,
                     overlayColor: Colors.red,
                     minimumSize: const Size(200, 50),
-                    //padding: EdgeInsets.symmetric(horizontal: 16),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(15),
                     ),
                   ),
                   onPressed: () async {
-                    await sendBookingData3();
+                    await sendBookingData4();
                   },
                   child: const Text(
                     "Submit",

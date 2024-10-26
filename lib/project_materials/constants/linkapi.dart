@@ -21,3 +21,7 @@ const String linkBookTrips = "http://10.0.2.2:8000/api/bookingTrip";
 
 // Feature
 const String linkAddBillingData = "http://10.0.2.2:8000/api/addBillingDetails";
+
+// Show Trips For One Country
+const String linkViewTripsForOneCountry =
+    "http://10.0.2.2:8000/api/showTripsForOneCountry";

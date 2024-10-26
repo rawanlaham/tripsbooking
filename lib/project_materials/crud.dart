@@ -18,30 +18,35 @@ class Crud {
     }
   }
 
-  postRequest(String uri, Map data) async {
+  postRequest(String uri, Map<String, dynamic> data) async {
     await Future.delayed(Duration(seconds: 2));
+    // print('token:   ${sharedPref.getString("token")} ');
+    // print('data: ------------------- $data');
     try {
       var response = await http.post(
         Uri.parse(uri),
         body: data,
         headers: {
           'Authorization': 'Bearer ${sharedPref.getString("token")}',
-          //'Content-Type': 'application/json',
+          // 'Accept': 'application/json',
+          //"Content-Type": "application/json",
         },
       );
+
       if (response.statusCode == 200) {
         var responseBody = jsonDecode(response.body);
         return responseBody;
+        // return response;
+      } else if (response.statusCode == 302) {
+        print("Response StatusCode302 Error:      ${response.statusCode}");
       } else {
-        print("Error ${response.statusCode}");
+        print("Response StatusCode Error:      ${response.statusCode}");
       }
     } catch (e) {
       print("Error catch $e");
     }
   }
 }
-
-
 /*
 import 'dart:convert';
 
@@ -77,3 +82,4 @@ class Crud {
   }
 }
 */
+  

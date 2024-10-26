@@ -47,7 +47,7 @@ class CountryCard extends StatelessWidget {
             top: 10,
             left: 30,
             child: Text(
-              countryModel.name,
+              countryModel.name!,
 
               ///
               //"$countryName",

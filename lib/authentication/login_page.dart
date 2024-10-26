@@ -6,20 +6,24 @@ import 'package:project1v5/project_materials/crud.dart';
 import 'package:project1v5/project_materials/valid.dart';
 
 class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+  // final UserModel? userModel;
+  const LoginPage({
+    super.key,
+    // this.userModel
+  });
 
   @override
   State<LoginPage> createState() => _LoginPageState();
 }
 
 class _LoginPageState extends State<LoginPage> {
-  GlobalKey<FormState> formstate = GlobalKey();
+  GlobalKey<FormState> formstate = GlobalKey(); //
 
   Crud _crud = Crud();
   bool isLoading = false;
 
-  TextEditingController email = TextEditingController();
-  TextEditingController password = TextEditingController();
+  TextEditingController email = TextEditingController(); //
+  TextEditingController password = TextEditingController(); //
 
   login() async {
     if (formstate.currentState!.validate()) {
@@ -33,23 +37,22 @@ class _LoginPageState extends State<LoginPage> {
         //isLoading = true;
         isLoading = false;
         setState(() {});
+        // widget.userModel!.id = sharedPref.setString("id", response["data"]["id"].toString());
         sharedPref.setString("id", response["data"]["id"].toString());
         sharedPref.setString("username", response["data"]["name"]);
         sharedPref.setString("email", response["data"]["email"]);
         sharedPref.setString("token", response["token"]); //
         Navigator.of(context).pushNamed("home");
-      } catch (e) {
+      } catch (e, h) {
         isLoading = false;
-        setState(() {
-          // تعيينه إلى false عند حدوث خطأ
-        });
+        setState(() {});
         AwesomeDialog(
                 context: context,
                 title: 'Warning',
                 body: const Text(
                     'Email address or password is invalid, or the account is not existing.'))
             .show();
-        print("Login Error: $e");
+        print("Login Error: $e, $h");
       }
     }
   }

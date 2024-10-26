@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:project1v5/countries/all_countries.dart';
 import 'package:project1v5/main.dart';
 import 'package:project1v5/project_materials/components/conutry_card.dart';
 import 'package:project1v5/project_materials/constants/linkapi.dart';
@@ -7,21 +8,18 @@ import 'package:project1v5/project_materials/models/country_model.dart';
 
 class HomePage extends StatefulWidget {
   final CountryModel? countryModel;
-
-  ///
-
   const HomePage({super.key, this.countryModel});
-
-  ///
-
   @override
   State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
   Crud crud = Crud();
-
-  ///
+  int currentIndex = 0;
+  final List<Widget> pages = [
+    HomePage(),
+    AllCountries(),
+  ];
 
   Future<List<CountryModel>> getCountry() async {
     ///
@@ -32,6 +30,7 @@ class _HomePageState extends State<HomePage> {
       List<dynamic> data = response['data'];
       List<CountryModel> countries =
           data.map((item) => CountryModel.fromJson(item)).toList();
+      // print(widget.countryModel!.id);
       return countries;
     } catch (e) {
       print("GetCountry error is: $e");
@@ -60,6 +59,7 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         actions: [
           IconButton(
+              color: Colors.teal,
               onPressed: () {
                 sharedPref.clear();
                 Navigator.of(context).pushNamed("login");
@@ -68,17 +68,31 @@ class _HomePageState extends State<HomePage> {
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
+        selectedLabelStyle: const TextStyle(fontSize: 14),
+        unselectedLabelStyle: const TextStyle(fontSize: 14),
+        currentIndex: currentIndex,
+        onTap: (index) {
+          setState(() {
+            currentIndex = index;
+          });
+          switch (index) {
+            case 0:
+              Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (context) => HomePage()));
+              break;
+            case 1:
+              Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => AllCountries()));
+              break;
+          }
+        },
         items: const [
           BottomNavigationBarItem(
-            icon: Icon(Icons.search),
-            label: 'Explore',
+            icon: Icon(Icons.home, color: Colors.teal),
+            label: 'Home',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.favorite),
-            label: 'Trips',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.map),
+            icon: Icon(Icons.map, color: Colors.teal),
             label: 'Countries',
           ),
         ],

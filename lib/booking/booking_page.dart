@@ -1,5 +1,6 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:project1v5/countries/all_countries.dart';
 import 'package:project1v5/main.dart';
 import 'package:project1v5/project_materials/components/age_drop_down.dart';
 import 'package:project1v5/project_materials/components/custom_form_field.dart';
@@ -8,13 +9,12 @@ import 'package:project1v5/project_materials/crud.dart';
 import 'package:project1v5/project_materials/models/billing_model.dart';
 import 'package:project1v5/project_materials/models/booking_model.dart';
 import 'package:project1v5/project_materials/models/trip_model.dart';
-import 'package:project1v5/trip/trippagetest.dart';
 
 class BookingPage extends StatefulWidget {
   final TripModel tripModel;
-  final BookingModel? bookingModel;
+  BookingModel? bookingModel;
   final BillingModel? billingModel;
-  const BookingPage(
+  BookingPage(
       {super.key,
       required this.tripModel,
       this.bookingModel,
@@ -54,8 +54,9 @@ class _BookingPageState extends State<BookingPage> {
   bool isLoading = false;
 
   Future<void> sendBookingData3() async {
-    String? userId = sharedPref.getString("id");
+    String userId = sharedPref.getString("id")!;
     String? token = sharedPref.getString("token");
+
     if (formstate.currentState!.validate()) {
       if (totalNumbers > availableNumbers) {
         AwesomeDialog(
@@ -69,151 +70,86 @@ class _BookingPageState extends State<BookingPage> {
         return;
       }
 
-      print("Sending data:");
-      print("userId: $userId");
-      print("tripId: ${widget.tripModel.id}");
-      print("adult: $numAdults");
-      print("children: $numChildren");
-      print("infant: $numInfants");
-      print("start_date: ${widget.tripModel.attributes!.firstDate}");
-      print("end_date: ${widget.tripModel.attributes!.endDate}");
-
-      if (widget.tripModel.attributes == null ||
-          widget.tripModel.attributes!.firstDate.isEmpty) {
-        setState(() {
-          isLoading = true;
-        });
-
-        try {
-          var response =
-              await crud.postRequest("$linkBookTrips/${widget.tripModel.id}", {
-            "adult": numAdults,
-            "children": numChildren,
-            "infant": numInfants,
-            "start_date": widget.tripModel.attributes!.firstDate,
-            "end_date": widget.tripModel.attributes!.endDate,
-            "trip_id": widget.tripModel.id
-          });
-          setState(() {
-            isLoading = false;
-          });
-          Navigator.of(context).push(
-              MaterialPageRoute(builder: (context) => const Trippagetest()));
-        } catch (e) {
-          print("sendBookingData3 Error: $e");
-        }
-      } else {
-        print("Error: attributes or firstDate is null or empty");
-      }
-      ;
-    }
-  }
-
-  Future<void> sendBookingData2() async {
-    // print("bookingModel: ${widget.bookingModel}");
-    // print("billingModel: ${widget.billingModel}");
-    String? userId = sharedPref.getString("id");
-    String? token = sharedPref.getString("token");
-    // if (formstate.currentState!.validate()) {
-    if (totalNumbers > availableNumbers) {
-      AwesomeDialog(
-        context: context,
-        dialogType: DialogType.warning,
-        title: 'Warning',
-        desc:
-            'The number of participants exceeds the available number of the trip.',
-        btnOkOnPress: () {},
-      ).show();
-      return;
-    }
-    setState(() {
-      isLoading = true;
-    });
-
-    try {
-      var response = await crud.postRequest(
-        "$linkBookTrips/${widget.tripModel.id}",
-        {
-          "user_id": userId, //
-          "trip_id": widget.tripModel.id.toString(), //
-          "adult": numAdults.toString(), //
-          "children": numChildren.toString(), //
-          "infant": numInfants.toString(), //
-          "start_date": widget.tripModel.attributes!.firstDate, //
-          "end_date": widget.tripModel.attributes!.endDate, //
-
-          //"id": widget.bookingModel!.id
-        },
-        // headers: {
-        //   'Authorization': 'Bearer $token'
-        // }
-      );
-      print("response: $response");
-      print("Sending request to: $linkBookTrips/${widget.tripModel.id}");
-
       setState(() {
-        isLoading = false;
+        isLoading = true;
       });
 
-      // print("Response: $response");
-      // BookingModel bookingModel = BookingModel(
-      //   id: response['data']['id'], // استخدم البيانات القادمة من الـ API
-      //   // يمكنك إضافة المزيد من الحقول هنا إذا لزم الأمر
-      // );
+      try {
+        var response =
+            await crud.postRequest("$linkBookTrips/${widget.tripModel.id}", {
+          "adult": numAdults.toString(),
+          "children": numChildren.toString(),
+          "infant": numInfants.toString(),
+          "start_date": widget.tripModel.attributes!.firstDate,
+          "end_date": widget.tripModel.attributes!.endDate,
+          "trip_id": widget.tripModel.id.toString(),
+        });
+        // print("Response status: ${response.toString()}");
+        // print("Response body: ${response.statusCode}");
 
-      // print("Before navigating: bookingModel: ${widget.bookingModel}");
-      // print("Before navigating: billingModel: ${widget.billingModel}");
-      BookingModel bookingModel = BookingModel(
-        id: response['id'],
-        // أضف المزيد من الحقول إذا لزم الأمر
-      );
-      print("Before navigating: bookingModel: $bookingModel");
+        setState(() {
+          isLoading = false;
+        });
 
-      Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) =>
-              //  BillingPage(
-              //       billingModel: widget.billingModel,
-              //       bookingModel: bookingModel,
-              //     )
-              Trippagetest()));
-    } catch (e) {
-      print("sendBookingData1 Error: $e");
+        // Navigator.of(context)
+        //     .push(MaterialPageRoute(builder: (context) => BillingPage()));
+        Navigator.of(context)
+            .push(MaterialPageRoute(builder: (context) => AllCountries()));
+
+        /*
+        edited code
+        BookingModel booking = BookingModel(
+          userId: int.parse(userId),
+          tripId: int.parse(widget.tripModel.id!),
+          numAdult: numAdults,
+          numChild: numChildren,
+          numInfant: numInfants,
+          startDate: widget.tripModel.attributes!.firstDate,
+          endDate: widget.tripModel.attributes!.endDate,
+        );
+        Map<String, dynamic> bookingData = booking.toJson();
+
+        var response = await crud.postRequest(
+            "$linkBookTrips/${widget.tripModel.id}", bookingData);
+
+        setState(() {
+          isLoading = false;
+        });
+
+        // استخدام booking_id من الاستجابة إذا كان موجودًا
+        int bookingId = response['id'];
+
+        // الانتقال إلى صفحة الفوترة BillingPage مع تمرير bookingId
+        Navigator.of(context).push(
+          MaterialPageRoute(
+              builder: (context) => BillingPage(bookingId: bookingId)),
+        );
+        */
+      } catch (e, h) {
+        print("sendBookingData3 Error: $e, $h");
+      }
     }
-    // }
 
     /*
     if (formstate2.currentState!.validate()) {
       setState(() {
         isLoading = true;
       });
-      // print("${widget.bookingModel?.id}");
-
       try {
-        var response = await crud
-            .postRequest("$linkAddBillingData/${widget.bookingModel?.id}", {
-          "first_name": widget.billingModel?.firstName,
-          "last_name": widget.billingModel?.lastName,
-          "phone_number": widget.billingModel?.phoneNumber,
-          "email": widget.billingModel?.email,
-          "address": widget.billingModel?.address,
-          "booking_id": widget.bookingModel?.id
-        });
-
-        BillingModel billingModel = BillingModel(
-          id: response['id'],
-          // أضف المزيد من الحقول إذا لزم الأمر
-        );
-        print("Before navigating: billingModel: $billingModel");
-
-        setState(() {
+      var response = await crud.postRequest("$linkAddBillingData/${widget.bookingModel!.id}", {
+        "first_name": widget.billingModel?.firstName,
+            "last_name": widget.billingModel?.lastName,
+            "phone_number": widget.billingModel?.phoneNumber,
+            "email": widget.billingModel?.email,
+            "address": widget.billingModel?.address,
+            "booking_id": widget.bookingModel?.id
+      });
+      setState(() {
           isLoading = false;
-        });
-
-        Navigator.of(context)
-            .push(MaterialPageRoute(builder: (context) => Trippagetest2()));
-      } catch (e) {
-        print("sendBookingData2 Error: $e");
-      }
+      });
+    } catch (e) {
+      print("sendBillingData Error: $e");
+    }
     }
     */
   }
@@ -939,4 +875,117 @@ class _BookingPageState extends State<BookingPage> {
     // );
   }
 }
+*/
+
+
+/*
+  Future<void> sendBookingData2() async {
+    // print("bookingModel: ${widget.bookingModel}");
+    // print("billingModel: ${widget.billingModel}");
+    String? userId = sharedPref.getString("id");
+    String? token = sharedPref.getString("token");
+    // if (formstate.currentState!.validate()) {
+    if (totalNumbers > availableNumbers) {
+      AwesomeDialog(
+        context: context,
+        dialogType: DialogType.warning,
+        title: 'Warning',
+        desc:
+            'The number of participants exceeds the available number of the trip.',
+        btnOkOnPress: () {},
+      ).show();
+      return;
+    }
+    setState(() {
+      isLoading = true;
+    });
+
+    try {
+      var response = await crud.postRequest(
+        "$linkBookTrips/${widget.tripModel.id}",
+        {
+          "user_id": userId, //
+          "trip_id": widget.tripModel.id.toString(), //
+          "adult": numAdults.toString(), //
+          "children": numChildren.toString(), //
+          "infant": numInfants.toString(), //
+          "start_date": widget.tripModel.attributes!.firstDate, //
+          "end_date": widget.tripModel.attributes!.endDate, //
+
+          //"id": widget.bookingModel!.id
+        },
+        // headers: {
+        //   'Authorization': 'Bearer $token'
+        // }
+      );
+      print("response: $response");
+      print("Sending request to: $linkBookTrips/${widget.tripModel.id}");
+
+      setState(() {
+        isLoading = false;
+      });
+
+      // print("Response: $response");
+      // BookingModel bookingModel = BookingModel(
+      //   id: response['data']['id'], // استخدم البيانات القادمة من الـ API
+      //   // يمكنك إضافة المزيد من الحقول هنا إذا لزم الأمر
+      // );
+
+      // print("Before navigating: bookingModel: ${widget.bookingModel}");
+      // print("Before navigating: billingModel: ${widget.billingModel}");
+      BookingModel bookingModel = BookingModel(
+        id: response['id'],
+        // أضف المزيد من الحقول إذا لزم الأمر
+      );
+      print("Before navigating: bookingModel: $bookingModel");
+
+      Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) =>
+              //  BillingPage(
+              //       billingModel: widget.billingModel,
+              //       bookingModel: bookingModel,
+              //     )
+              Trippagetest()));
+    } catch (e) {
+      print("sendBookingData1 Error: $e");
+    }
+    // }
+
+    /*
+    if (formstate2.currentState!.validate()) {
+      setState(() {
+        isLoading = true;
+      });
+      // print("${widget.bookingModel?.id}");
+
+      try {
+        var response = await crud
+            .postRequest("$linkAddBillingData/${widget.bookingModel?.id}", {
+          "first_name": widget.billingModel?.firstName,
+          "last_name": widget.billingModel?.lastName,
+          "phone_number": widget.billingModel?.phoneNumber,
+          "email": widget.billingModel?.email,
+          "address": widget.billingModel?.address,
+          "booking_id": widget.bookingModel?.id
+        });
+
+        BillingModel billingModel = BillingModel(
+          id: response['id'],
+          // أضف المزيد من الحقول إذا لزم الأمر
+        );
+        print("Before navigating: billingModel: $billingModel");
+
+        setState(() {
+          isLoading = false;
+        });
+
+        Navigator.of(context)
+            .push(MaterialPageRoute(builder: (context) => Trippagetest2()));
+      } catch (e) {
+        print("sendBookingData2 Error: $e");
+      }
+    }
+    */
+  }
+
 */
