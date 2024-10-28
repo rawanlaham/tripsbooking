@@ -5,12 +5,10 @@ class CustomFormField extends StatelessWidget {
     super.key,
     required this.fieldEntry,
     required this.myController,
-    //this.onChanged,
   });
 
   final String fieldEntry;
   final TextEditingController myController;
-  //final ValueChanged<String>? onChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +31,6 @@ class CustomFormField extends StatelessWidget {
           SizedBox(
             width: 300,
             child: TextFormField(
-              //controller: myController,
               controller: myController,
               decoration: InputDecoration(
                 filled: true,
@@ -51,8 +48,6 @@ class CustomFormField extends StatelessWidget {
                   borderSide: const BorderSide(color: Colors.grey),
                 ),
               ),
-              //onChanged: onChanged,
-              //onChanged: (value) {},
             ),
           ),
         ],

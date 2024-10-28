@@ -7,7 +7,143 @@ import 'package:project1v5/project_materials/constants/linkapi.dart';
 import 'package:project1v5/project_materials/crud.dart';
 import 'package:project1v5/project_materials/models/country_model.dart';
 import 'package:project1v5/project_materials/models/trip_model.dart';
+import 'package:project1v5/trip/trip_page.dart';
 
+class CountryPage extends StatefulWidget {
+  final TripModel? tripModel;
+  final OneTripModel? oneTripModel;
+  final CountryModel? countryModel;
+
+  const CountryPage(
+      {super.key, this.tripModel, this.oneTripModel, this.countryModel});
+
+  @override
+  State<CountryPage> createState() => _CountryPageState();
+}
+
+class _CountryPageState extends State<CountryPage> {
+  Crud crud = Crud();
+  int currentIndex = 0;
+  final List<Widget> pages = [HomePage(), AllCountries()];
+
+  Future<List<TripModel>> getTripsForOneCountry() async {
+    try {
+      var response = await crud
+          .getRequest("$linkViewTripsForOneCountry/${widget.countryModel!.id}");
+      //"id": sharedPref.getString("id"), // to show the owned items
+      List<dynamic> data = response['data'];
+      List<TripModel> trips =
+          data.map((item) => TripModel.fromJson(item)).toList();
+      return trips;
+    } catch (e) {
+      print("getTripsForOneCountry Error is:        $e");
+    }
+    return [];
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: FutureBuilder(
+        future: getTripsForOneCountry(),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            List<TripModel> trips = snapshot.data!;
+            return Scaffold(
+              appBar: AppBar(
+                title: const Text("this is appBar!"),
+              ),
+              bottomNavigationBar: BottomNavigationBar(
+                selectedLabelStyle: const TextStyle(fontSize: 14),
+                unselectedLabelStyle: const TextStyle(fontSize: 14),
+                currentIndex: currentIndex,
+                onTap: (index) {
+                  setState(() {
+                    currentIndex = index;
+                  });
+                  switch (index) {
+                    case 0:
+                      Navigator.of(context).pushReplacement(
+                          MaterialPageRoute(builder: (context) => HomePage()));
+                      break;
+                    case 1:
+                      Navigator.of(context).pushReplacement(MaterialPageRoute(
+                          builder: (context) => AllCountries()));
+                      break;
+                  }
+                },
+                items: const [
+                  BottomNavigationBarItem(
+                    icon: Icon(Icons.home, color: Colors.teal),
+                    label: 'Home',
+                  ),
+                  BottomNavigationBarItem(
+                    icon: Icon(
+                      Icons.map,
+                      color: Colors.teal,
+                    ),
+                    label: 'Countries',
+                  ),
+                ],
+              ),
+              body: Padding(
+                padding: const EdgeInsets.all(24.0),
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        width: 350,
+                        child: TextField(
+                          decoration: InputDecoration(
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(40)),
+                              filled: true,
+                              fillColor: Colors.white,
+                              hintText: "Where are you going?",
+                              hintStyle: const TextStyle(color: Colors.grey),
+                              prefixIcon: const Icon(Icons.search),
+                              prefixIconColor: Colors.black),
+                        ),
+                      ),
+                      ListView.builder(
+                        itemCount: trips.length,
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemBuilder: (context, i) {
+                          return GestureDetector(
+                            onTap: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) =>
+                                      TripPage(tripModel: trips[i])));
+                            },
+                            child: TripCard(
+                              tripModel: trips[i],
+                            ),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            );
+          }
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+          return const Center(
+            child: Text("Is loading..."),
+          );
+        },
+      ),
+    );
+  }
+}
+// */
+
+/* updated
 class CountryPage extends StatefulWidget {
   final TripModel? tripModel;
   final OneTripModel? oneTripModel;
@@ -25,17 +161,17 @@ class _CountryPageState extends State<CountryPage> {
   Crud crud = Crud();
   int currentIndex = 0;
   final List<Widget> pages = [HomePage(), AllCountries()];
+  List<TripModel> allTrips = []; // قائمة لجميع الرحلات //
+  List<TripModel> filteredTrips = []; // قائمة للرحلات المفلترة //
+  String searchQuery = ""; // نص البحث //
+
 
   // /*
   Future<List<TripModel>> getTripsForOneCountry() async {
     try {
-      print(linkViewTripsForOneCountry);
-      print(widget.countryModel!.id);
       var response = await crud
           .getRequest("$linkViewTripsForOneCountry/${widget.countryModel!.id}");
       //"id": sharedPref.getString("id"), // to show the owned items
-      print(
-          "linkViewTripsForOneCountry/countryid:         $linkViewTripsForOneCountry/${widget.countryModel!.id}");
       List<dynamic> data = response['data'];
       List<TripModel> trips =
           data.map((item) => TripModel.fromJson(item)).toList();
@@ -116,11 +252,18 @@ class _CountryPageState extends State<CountryPage> {
                         shrinkWrap: true,
                         physics: const NeverScrollableScrollPhysics(),
                         itemBuilder: (context, i) {
-                          return TripCard(
-                            tripModel: widget.tripModel, //trips[i],
+                          return GestureDetector(
+                            onTap: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) =>
+                                      TripPage(tripModel: trips[i])));
+                            },
+                            child: TripCard(
+                              tripModel: trips[i],
+                            ),
                           );
                         },
-                      )
+                      ),
                     ],
                   ),
                 ),
@@ -140,7 +283,7 @@ class _CountryPageState extends State<CountryPage> {
     );
   }
 }
-// */
+*/
 
 /*
 import 'package:flutter/material.dart';

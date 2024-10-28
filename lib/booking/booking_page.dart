@@ -1,39 +1,29 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
-import 'package:project1v5/countries/all_countries.dart';
+import 'package:project1v5/booking/billing_page.dart';
 import 'package:project1v5/main.dart';
 import 'package:project1v5/project_materials/components/age_drop_down.dart';
-import 'package:project1v5/project_materials/components/custom_form_field.dart';
 import 'package:project1v5/project_materials/constants/linkapi.dart';
 import 'package:project1v5/project_materials/crud.dart';
-import 'package:project1v5/project_materials/models/billing_model.dart';
 import 'package:project1v5/project_materials/models/booking_model.dart';
 import 'package:project1v5/project_materials/models/trip_model.dart';
 
 class BookingPage extends StatefulWidget {
   final TripModel tripModel;
   BookingModel? bookingModel;
-  final BillingModel? billingModel;
-  BookingPage(
-      {super.key,
-      required this.tripModel,
-      this.bookingModel,
-      this.billingModel});
+  // final BillingModel? billingModel;
+  BookingPage({
+    super.key,
+    required this.tripModel,
+    this.bookingModel,
+    // this.billingModel
+  });
 
   @override
   State<BookingPage> createState() => _BookingPageState();
 }
 
 class _BookingPageState extends State<BookingPage> {
-  GlobalKey<FormState> formstate = GlobalKey();
-  GlobalKey<FormState> formstate2 = GlobalKey();
-
-  TextEditingController billingFirstName = TextEditingController();
-  TextEditingController billingLastName = TextEditingController();
-  TextEditingController billingPhoneNumber = TextEditingController();
-  TextEditingController billingEmail = TextEditingController();
-  TextEditingController billingAddress = TextEditingController();
-
   Crud crud = Crud();
   int numAdults = 0;
   int numChildren = 0;
@@ -53,50 +43,72 @@ class _BookingPageState extends State<BookingPage> {
 
   bool isLoading = false;
 
-  Future<void> sendBookingData3() async {
+  Future<void> sendBookingData() async {
     String userId = sharedPref.getString("id")!;
     String? token = sharedPref.getString("token");
 
-    if (formstate.currentState!.validate()) {
-      if (totalNumbers > availableNumbers) {
-        AwesomeDialog(
-          context: context,
-          dialogType: DialogType.warning,
-          title: 'Warning',
-          desc:
-              'The number of participants exceeds the available number of the trip.',
-          btnOkOnPress: () {},
-        ).show();
-        return;
-      }
+    if (totalNumbers > availableNumbers) {
+      AwesomeDialog(
+        context: context,
+        dialogType: DialogType.warning,
+        title: 'Warning',
+        desc:
+            'The number of participants exceeds the available number of the trip.',
+        btnOkOnPress: () {},
+      ).show();
+      return;
+    }
+
+    if (totalNumbers == 0) {
+      AwesomeDialog(
+        context: context,
+        dialogType: DialogType.warning,
+        title: 'Warning',
+        desc: 'Please select one participant at least for the trip.',
+        btnOkOnPress: () {},
+      ).show();
+      return;
+    }
+
+    setState(() {
+      isLoading = true;
+    });
+
+    try {
+      var response =
+          await crud.postRequest("$linkBookTrips/${widget.tripModel.id}", {
+        "adult": numAdults.toString(),
+        "children": numChildren.toString(),
+        "infant": numInfants.toString(),
+        "start_date": widget.tripModel.attributes!.firstDate,
+        "end_date": widget.tripModel.attributes!.endDate,
+        "trip_id": widget.tripModel.id.toString(),
+      });
+      // print("Response status: ${response.toString()}");
+      // print("Response body: ${response.statusCode}");
 
       setState(() {
-        isLoading = true;
+        isLoading = false;
       });
 
-      try {
-        var response =
-            await crud.postRequest("$linkBookTrips/${widget.tripModel.id}", {
-          "adult": numAdults.toString(),
-          "children": numChildren.toString(),
-          "infant": numInfants.toString(),
-          "start_date": widget.tripModel.attributes!.firstDate,
-          "end_date": widget.tripModel.attributes!.endDate,
-          "trip_id": widget.tripModel.id.toString(),
-        });
-        // print("Response status: ${response.toString()}");
-        // print("Response body: ${response.statusCode}");
+      // List<dynamic> data = response['data'];
+      // List<TripModel> trips =
+      //     data.map((item) => TripModel.fromJson(item)).toList();
+      //BookingModel bookingModel = BookingModel.fromJson(response);
+      //var booking = BookingModel.fromJson(response);
+      // BookingModel? newBookingModel = widget.bookingModel;
+      // print(newBookingModel);
+      //print("newbookingModel:      $newbookingModel");
+      //print(booking);
+      //print(booking.id);
+      widget.bookingModel = BookingModel.fromJson(response);
+      print("widget.bookingModel:         ${widget.bookingModel}");
+      Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => BillingPage(
+                bookingModel: widget.bookingModel,
+              )));
 
-        setState(() {
-          isLoading = false;
-        });
-
-        // Navigator.of(context)
-        //     .push(MaterialPageRoute(builder: (context) => BillingPage()));
-        Navigator.of(context)
-            .push(MaterialPageRoute(builder: (context) => AllCountries()));
-
-        /*
+      /*
         edited code
         BookingModel booking = BookingModel(
           userId: int.parse(userId),
@@ -125,33 +137,9 @@ class _BookingPageState extends State<BookingPage> {
               builder: (context) => BillingPage(bookingId: bookingId)),
         );
         */
-      } catch (e, h) {
-        print("sendBookingData3 Error: $e, $h");
-      }
+    } catch (e, h) {
+      print("sendBookingData3 Error: $e, $h");
     }
-
-    /*
-    if (formstate2.currentState!.validate()) {
-      setState(() {
-        isLoading = true;
-      });
-      try {
-      var response = await crud.postRequest("$linkAddBillingData/${widget.bookingModel!.id}", {
-        "first_name": widget.billingModel?.firstName,
-            "last_name": widget.billingModel?.lastName,
-            "phone_number": widget.billingModel?.phoneNumber,
-            "email": widget.billingModel?.email,
-            "address": widget.billingModel?.address,
-            "booking_id": widget.bookingModel?.id
-      });
-      setState(() {
-          isLoading = false;
-      });
-    } catch (e) {
-      print("sendBillingData Error: $e");
-    }
-    }
-    */
   }
 
   @override
@@ -241,45 +229,6 @@ class _BookingPageState extends State<BookingPage> {
                 ],
               ),
             ),
-            Form(
-              key: formstate,
-              child: CustomFormField(
-                  fieldEntry: "fieldEntry", myController: billingFirstName),
-            ),
-            const Padding(
-              padding: EdgeInsets.all(16.0),
-              child: Text(
-                'Billing Details',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-              ),
-            ),
-            Form(
-              key: formstate2,
-              child: Column(
-                children: [
-                  CustomFormField(
-                    fieldEntry: "First Name",
-                    myController: billingFirstName,
-                  ),
-                  CustomFormField(
-                    fieldEntry: "Last Name",
-                    myController: billingLastName,
-                  ),
-                  CustomFormField(
-                    fieldEntry: "Email",
-                    myController: billingEmail,
-                  ),
-                  CustomFormField(
-                    fieldEntry: "Phone Number",
-                    myController: billingPhoneNumber,
-                  ),
-                  CustomFormField(
-                    fieldEntry: "Address",
-                    myController: billingAddress,
-                  ),
-                ],
-              ),
-            ),
             Center(
               child: Padding(
                 padding: const EdgeInsets.only(top: 16, bottom: 8),
@@ -289,13 +238,16 @@ class _BookingPageState extends State<BookingPage> {
                     shadowColor: Colors.black,
                     overlayColor: Colors.red,
                     minimumSize: const Size(200, 50),
-                    //padding: EdgeInsets.symmetric(horizontal: 16),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(15),
                     ),
                   ),
                   onPressed: () async {
-                    await sendBookingData3();
+                    await sendBookingData();
+                    // Navigator.of(context).push(MaterialPageRoute(
+                    //     builder: (context) => BillingPage(
+                    //         //  bookingModel: ,
+                    //         )));
                   },
                   child: const Text(
                     "Submit",
@@ -315,7 +267,8 @@ class _BookingPageState extends State<BookingPage> {
 }
 
 
-/*import 'package:awesome_dialog/awesome_dialog.dart';
+/*
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:project1v5/booking/billing_page.dart';
 import 'package:project1v5/main.dart';

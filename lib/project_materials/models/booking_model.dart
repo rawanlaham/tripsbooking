@@ -20,16 +20,16 @@ class BookingModel {
   });
 
   BookingModel.fromJson(Map<String, dynamic> json) {
-    id = json["id"] ?? 0;
-    userId = json["user_id"] ?? 0;
-    tripId = json["trip_id"] ?? 0;
+    id = json["id"];
+    userId = json["user_id"];
+    tripId = json["trip_id"];
 
-    numAdult = int.tryParse(json["adult"] ?? "0") ?? 0;
-    numChild = int.tryParse(json["children"] ?? "0") ?? 0;
-    numInfant = int.tryParse(json["infant"] ?? "0") ?? 0;
+    numAdult = int.parse(json["adult"]);
+    numChild = int.parse(json["children"]);
+    numInfant = int.parse(json["infant"]);
 
-    startDate = json["start_date"] ?? "";
-    endDate = json["end_date"] ?? "";
+    startDate = json["start_date"];
+    endDate = json["end_date"];
   }
 
   Map<String, dynamic> toJson() {

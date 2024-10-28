@@ -18,6 +18,38 @@ class Crud {
     }
   }
 
+  postRequest(String uri, Map<String, dynamic> data,
+      {Map<String, String>? headers}) async {
+    await Future.delayed(Duration(seconds: 2));
+    // print('token:   ${sharedPref.getString("token")} ');
+    // print('data: ------------------- $data');
+    final defaultHeaders = {
+      'Authorization': 'Bearer ${sharedPref.getString("token")}',
+      // 'Accept': 'application/json',
+      //"Content-Type": "application/json",
+    };
+    final allHeaders =
+        headers != null ? {...defaultHeaders, ...headers} : defaultHeaders;
+
+    try {
+      var response =
+          await http.post(Uri.parse(uri), body: data, headers: allHeaders);
+
+      if (response.statusCode == 200) {
+        var responseBody = jsonDecode(response.body);
+        return responseBody;
+        // return response;
+      } else if (response.statusCode == 302) {
+        print("Response StatusCode302 Error:      ${response.statusCode}");
+      } else {
+        print("Response StatusCode Error:      ${response.statusCode}");
+      }
+    } catch (e) {
+      print("Error catch $e");
+    }
+  }
+
+  /*
   postRequest(String uri, Map<String, dynamic> data) async {
     await Future.delayed(Duration(seconds: 2));
     // print('token:   ${sharedPref.getString("token")} ');
@@ -46,6 +78,7 @@ class Crud {
       print("Error catch $e");
     }
   }
+  */
 }
 /*
 import 'dart:convert';

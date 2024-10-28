@@ -3,16 +3,17 @@ import 'package:project1v5/main.dart';
 import 'package:project1v5/project_materials/components/custom_form_field.dart';
 import 'package:project1v5/project_materials/constants/linkapi.dart';
 import 'package:project1v5/project_materials/crud.dart';
+import 'package:project1v5/project_materials/models/booking_model.dart';
 
 class BillingPage extends StatefulWidget {
-  // final BookingModel? bookingModel;
+  final BookingModel? bookingModel;
   // final BillingModel? billingModel;
   // final int bookingId;
 
   const BillingPage({
     super.key,
     // required this.bookingId,
-    // this.bookingModel,
+    this.bookingModel,
     // this.billingModel
   });
 
@@ -32,44 +33,32 @@ class _BillingPageState extends State<BillingPage> {
   bool isLoading = false;
   Crud crud = Crud();
 
-  sendBookingData4() async {
+  Future<void> sendBookingData4() async {
     String? userId = sharedPref.getString("id");
     String? token = sharedPref.getString("token");
     if (formstate2.currentState!.validate()) {
       setState(() {
         isLoading = true;
       });
-
+      print("$linkAddBillingData/${widget.bookingModel!.id}");
+      print("token:      $token");
       try {
-        String? bookingId = sharedPref.getString("booking_id");
-        // print("Retrieved booking_id: $bookingId");
-        // print(
-        //     "linkAddBillingData/bookingId:       $linkAddBillingData/$bookingId");
-        // print("bookingId:        $bookingId");
-        print("First Name: ${billingFirstName.text}");
-        try {
-          var response =
-              await crud.postRequest("$linkAddBillingData/$bookingId", {
-            "first_name": billingFirstName.text,
-            "last_name": billingLastName.text,
-            "phone_number": billingPhoneNumber.text,
-            "email": billingEmail.text,
-            "address": billingAddress.text,
-            "booking_id": bookingId
-          });
-          // print("Response status: ${response.statusCode}");
-          // print("Response body: ${response.body}");
-        } catch (e) {
-          print("responseError:      $e");
-        }
-        // print("$linkAddBillingData/${widget.bookingModel?.id}");
-        // print("response:      $response");
+        var response = await crud
+            .postRequest("$linkAddBillingData/${widget.bookingModel!.id}", {
+          "first_name": billingFirstName.text,
+          "last_name": billingLastName.text,
+          "phone_number": billingPhoneNumber.text,
+          "email": billingEmail.text,
+          "address": billingAddress.text,
+          "booking_id": (widget.bookingModel!.id).toString()
+        }, headers: {
+          "Authorization":
+              "Bearer $token", // أضف رمز التوثيق هنا إذا كان مطلوبًا
+        });
+        print("Response:        $response");
         setState(() {
           isLoading = false;
         });
-
-        // Navigator.of(context)
-        //     .push(MaterialPageRoute(builder: (context) => Trippagetest2()));
       } catch (e, h) {
         print("sendBookingData2 Error: $e + $h");
       }
