@@ -44,6 +44,12 @@ class BookingModel {
     data['end_date'] = endDate;
     return data;
   }
+
+  @override
+  String toString() {
+    // TODO: implement toString
+    return '{id: $id, start_date: $startDate, end_date: $endDate}';
+  }
 }
 
 

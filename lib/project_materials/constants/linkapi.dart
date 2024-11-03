@@ -1,21 +1,30 @@
 const String linkServerName = "http://0.0.0.0";
+const String baseUrl = 'http://10.0.2.2:8000';
 
 // Auth
-const String linkSignUp = "http://10.0.2.2:8000/api/register";
-const String linkLogin = "http://10.0.2.2:8000/api/login";
+const String linkSignUp = "$baseUrl/api/register";
+const String linkLogin = "$baseUrl/api/login";
 
 // Countries
-const String linkViewCountry = "http://10.0.2.2:8000/api/countries";
-
-// One trip
-const String linkViewOneTrip = "http://10.0.2.2:8000/api/trip";
-
-// Booking
-const String linkBookTrips = "http://10.0.2.2:8000/api/bookingTrip";
-
-// Billing Data
-const String linkAddBillingData = "http://10.0.2.2:8000/api/addBillingDetails";
+const String linkViewCountry = "$baseUrl/api/countries";
 
 // Show Trips For One Country
-const String linkViewTripsForOneCountry =
-    "http://10.0.2.2:8000/api/showTripsForOneCountry";
+const String linkViewTripsForOneCountry = "$baseUrl/api/showTripsForOneCountry";
+
+// One trip
+const String linkViewOneTrip = "$baseUrl/api/trip";
+
+// Trip Images
+const String linkViewTripImages = "$baseUrl/api/tripImage";
+
+// search trips
+const String searchTrip = '$baseUrl/api/searchTrips';
+
+// Booking Data
+const String linkBookTrips = "$baseUrl/api/bookingTrip";
+
+// Billing Data
+const String linkAddBillingData = "$baseUrl/api/addBillingDetails";
+
+// Contact Data
+const String linkAddContactData = "$baseUrl/api/addContactDetails";

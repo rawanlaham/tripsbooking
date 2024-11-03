@@ -1,37 +1,51 @@
 class TripModel {
   late String? id;
   late AttributesModel? attributes;
-  late List<FeatureModel>? features;
-  late List<DayPlanModel>? dayPlans;
-  late List<AdvantageModel>? advantages;
+  late List<FeatureModel>? features = [];
+  late List<DayPlanModel>? dayPlans = [];
+  late List<AdvantageModel>? advantages = [];
 
   TripModel.fromJson(Map<String, dynamic> json) {
     id = json["id"];
     attributes = AttributesModel.fromJson(json['attributes']);
 
-    if (json['features'] != null) {
-      features = (json['features'] as List)
-          .map((item) => FeatureModel.fromJson(item))
-          .toList();
-    } else {
-      features = [];
+    if (json['features'] == null) return;
+    for (var e in json['features']) {
+      features!.add(FeatureModel.fromJson(e));
     }
 
-    if (json['day_plans'] != null) {
-      dayPlans = (json['day_plans'] as List)
-          .map((item) => DayPlanModel.fromJson(item))
-          .toList();
-    } else {
-      dayPlans = [];
+    for (var e in json['day_plans']) {
+      dayPlans!.add(DayPlanModel.fromJson(e));
     }
 
-    if (json['advantages'] != null) {
-      advantages = (json['advantages'] as List)
-          .map((item) => AdvantageModel.fromJson(item))
-          .toList();
-    } else {
-      advantages = [];
+    for (var e in json['advantages']) {
+      advantages!.add(AdvantageModel.fromJson(e));
     }
+
+    // if (json['features'] != null) {
+    //   features = (json['features'] as List)
+    //       .map((item) => FeatureModel.fromJson(item))
+    //       .toList();
+    // } else {
+    //   features = [];
+    // }
+
+    // if (json['day_plans'] != null) {
+    //   dayPlans = (json['day_plans'] as List)
+    //       .map((item) => DayPlanModel.fromJson(item))
+    //       .toList();
+    // } else {
+    //   dayPlans = [];
+    // }
+
+    // if (json['advantages'] != null) {
+    //   advantages = (json['advantages'] as List)
+    //       .map((item) => AdvantageModel.fromJson(item))
+    //       .toList();
+    // } else {
+    //   advantages = [];
+    // }
+
     // features =
     //     json['features']?.map((e) => FeatureModel.fromJson(e)).toList() ?? [];
     // dayPlans =
@@ -54,6 +68,7 @@ class AttributesModel {
   late int infantPrice;
   late String type;
   late int avibality;
+  late String? image;
 
   AttributesModel({
     required this.name,
@@ -79,6 +94,7 @@ class AttributesModel {
     infantPrice = json['infant_price'] ?? 0;
     type = json['type'] ?? "";
     avibality = json['avibality'] ?? 0;
+    image = json['original_url'] ?? null;
   }
 }
 

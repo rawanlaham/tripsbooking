@@ -1,36 +1,25 @@
 import 'package:flutter/material.dart';
 
-class CustomFormField extends StatelessWidget {
-  const CustomFormField({
+class LoginField extends StatelessWidget {
+  const LoginField({
     super.key,
     required this.fieldEntry,
     required this.myController,
-    this.valid,
+    required this.valid,
   });
 
   final String fieldEntry;
   final TextEditingController myController;
-  final String? Function(String?)? valid;
+  final String? Function(String?) valid;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Row(
+      padding: const EdgeInsets.all(8.0),
+      child: Stack(
         children: [
-          SizedBox(
-            width: 55,
-            child: Text(
-              fieldEntry,
-              style: const TextStyle(
-                color: Colors.black,
-                fontWeight: FontWeight.bold,
-                fontSize: 14.0,
-              ),
-            ),
-          ),
-          const SizedBox(width: 20),
-          Expanded(
+          Padding(
+            padding: const EdgeInsets.only(top: 20),
             child: TextFormField(
               validator: valid,
               controller: myController,
@@ -48,6 +37,22 @@ class CustomFormField extends StatelessWidget {
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),
                   borderSide: const BorderSide(color: Colors.grey),
+                ),
+              ),
+            ),
+          ),
+          Positioned(
+            top: 10.0,
+            left: 25.0,
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 4.0),
+              color: Colors.white,
+              child: Text(
+                fieldEntry,
+                style: const TextStyle(
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 14.0,
                 ),
               ),
             ),

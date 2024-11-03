@@ -26,6 +26,7 @@ class _MyAppState extends State<MyApp> {
       debugShowCheckedModeBanner: false,
       title: 'BookingTrips',
       initialRoute: (sharedPref.getString("id") == null) ? "login" : "home",
+      // initialRoute: "home",
       routes: {
         "signup": (context) => SignUpPage(),
         "login": (context) => LoginPage(),

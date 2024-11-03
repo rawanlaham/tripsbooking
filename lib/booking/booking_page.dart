@@ -1,7 +1,6 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:project1v5/booking/billing_page.dart';
-import 'package:project1v5/main.dart';
 import 'package:project1v5/project_materials/components/age_drop_down.dart';
 import 'package:project1v5/project_materials/constants/linkapi.dart';
 import 'package:project1v5/project_materials/crud.dart';
@@ -44,8 +43,8 @@ class _BookingPageState extends State<BookingPage> {
   bool isLoading = false;
 
   Future<void> sendBookingData() async {
-    String userId = sharedPref.getString("id")!;
-    String? token = sharedPref.getString("token");
+    //String userId = sharedPref.getString("id")!;
+    //String? token = sharedPref.getString("token");
 
     if (totalNumbers > availableNumbers) {
       AwesomeDialog(
@@ -310,7 +309,6 @@ class _BookingPageState extends State<BookingPage> {
   TextEditingController billingLastName = TextEditingController();
   TextEditingController billingPhoneNumber = TextEditingController();
   TextEditingController billingEmail = TextEditingController();
-  //TextEditingController billingCountry = TextEditingController();
   TextEditingController billingAddress = TextEditingController();
 
   int numAdults = 0;

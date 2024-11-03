@@ -24,7 +24,18 @@ class CountryPage extends StatefulWidget {
 class _CountryPageState extends State<CountryPage> {
   Crud crud = Crud();
   int currentIndex = 0;
+  bool searchHasData = false;
+
   final List<Widget> pages = [HomePage(), AllCountries()];
+
+  // Future<dynamic> searchTrips(String data) async {
+  //   if (data.isEmpty) return;
+
+  //   var response = await crud.getRequest('$searchTrip?search=$data',
+  //       printResponse: true, queryParameters: {'search': data});
+  //   // print(response);
+  //   return response;
+  // }
 
   Future<List<TripModel>> getTripsForOneCountry() async {
     try {
@@ -91,20 +102,38 @@ class _CountryPageState extends State<CountryPage> {
                 child: SingleChildScrollView(
                   child: Column(
                     children: [
-                      SizedBox(
-                        width: 350,
-                        child: TextField(
-                          decoration: InputDecoration(
-                              border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(40)),
-                              filled: true,
-                              fillColor: Colors.white,
-                              hintText: "Where are you going?",
-                              hintStyle: const TextStyle(color: Colors.grey),
-                              prefixIcon: const Icon(Icons.search),
-                              prefixIconColor: Colors.black),
-                        ),
-                      ),
+                      // SizedBox(
+                      //   width: 350,
+                      //   child: TextField(
+                      //     // onChanged: (t) {
+                      //     //   setState(() {});
+                      //     // },
+                      //     onSubmitted: (t) {
+                      //       setState(() {});
+                      //       // searchTrips('trip11');
+                      //     },
+                      //     //controller: searchController,
+                      //     decoration: InputDecoration(
+                      //         border: OutlineInputBorder(
+                      //             borderRadius: BorderRadius.circular(40)),
+                      //         filled: true,
+                      //         fillColor: Colors.white,
+                      //         hintText: "Where are you going?",
+                      //         hintStyle: const TextStyle(color: Colors.grey),
+                      //         prefixIcon: const Icon(Icons.search),
+                      //         prefixIconColor: Colors.black),
+                      //   ),
+                      // ),
+                      // if (searchHasData)
+                      //   ListView.separated(
+                      //       itemBuilder: (context, index) =>
+                      //           Text('snapshot.data[index]'),
+                      //       separatorBuilder: (context, index) =>
+                      //           const SizedBox(
+                      //             height: 1,
+                      //           ),
+                      //       itemCount: 1),
+
                       ListView.builder(
                         itemCount: trips.length,
                         shrinkWrap: true,

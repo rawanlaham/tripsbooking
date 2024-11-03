@@ -17,15 +17,27 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   Crud crud = Crud();
   int currentIndex = 0;
+  TextEditingController searchController = TextEditingController();
   final List<Widget> pages = [
     HomePage(),
     AllCountries(),
   ];
 
+  Future<dynamic> searchTrips(String data) async {
+    if (data.isEmpty) return;
+
+    var response = await crud.getRequest('$searchTrip?search=$data',
+        printResponse: true, queryParameters: {'search': data});
+    // print(response);
+    return response;
+  }
+
   Future<List<CountryModel>> getCountry() async {
     try {
       var response = await crud.getRequest(linkViewCountry);
+      // print(response["statusCode"]);
       //"id": sharedPref.getString("id"), // to show the owned items
+      print('response is null ${response == null}');
       List<dynamic> data = response['data'];
       List<CountryModel> countries =
           data.map((item) => CountryModel.fromJson(item)).toList();
@@ -93,18 +105,87 @@ class _HomePageState extends State<HomePage> {
                   child: SizedBox(
                     width: 300,
                     child: TextField(
+                      controller: searchController,
+                      onSubmitted: (text) {
+                        setState(() {});
+                      },
                       decoration: InputDecoration(
                           border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(40)),
+                              borderRadius: BorderRadius.circular(15)),
                           filled: true,
-                          fillColor: Colors.white,
+                          fillColor: Colors.grey[50],
                           hintText: "Where are you going?",
                           hintStyle: const TextStyle(color: Colors.grey),
                           prefixIcon: const Icon(Icons.search),
-                          prefixIconColor: Colors.black),
+                          prefixIconColor: Colors.teal),
                     ),
                   ),
                 ),
+                Positioned(
+                  top: 77,
+                  left: 38,
+                  child: SizedBox(
+                    height: 180,
+                    width: 280,
+                    child: FutureBuilder(
+                        future: searchTrips(searchController.text),
+                        builder: (context, snapshot) {
+                          print(
+                              'SNAPSHOT DATA----------------- ${snapshot.data}');
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return const CircularProgressIndicator();
+                          }
+                          if (snapshot.hasData) {
+                            print(
+                                'SNAPSHOT DATA----------------- ${snapshot.data}');
+                            // return Text('found');
+                            // return Text();
+                            return ListView.separated(
+                                // scrollDirection: Axi,
+                                shrinkWrap: true,
+                                itemBuilder: (context, index) {
+                                  return Card(
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(25),
+                                    ),
+                                    // margin: const EdgeInsets.symmetric(
+                                    //     vertical: 8, horizontal: 8),
+                                    child: ListTile(
+                                      leading: const Icon(
+                                        Icons.location_on,
+                                        color: Colors.teal,
+                                      ),
+                                      tileColor: Colors.grey[100],
+                                      title: Text(
+                                        snapshot.data[index]['name'],
+                                        style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 18,
+                                          color: Colors.black87,
+                                        ),
+                                      ),
+                                      trailing: const Icon(
+                                        Icons.arrow_forward_ios,
+                                        size: 16,
+                                        color: Colors.teal,
+                                      ),
+                                    ),
+                                  );
+                                },
+                                separatorBuilder: (context, index) =>
+                                    const SizedBox(
+                                      height: 0,
+                                    ),
+                                itemCount: snapshot.data.length);
+                          }
+                          return const SizedBox(
+                            height: 0,
+                            width: 0,
+                          );
+                        }),
+                  ),
+                )
               ],
             ),
             const Padding(

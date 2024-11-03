@@ -1,6 +1,7 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:project1v5/main.dart';
+import 'package:project1v5/project_materials/components/login_field.dart';
 import 'package:project1v5/project_materials/constants/linkapi.dart';
 import 'package:project1v5/project_materials/crud.dart';
 import 'package:project1v5/project_materials/valid.dart';
@@ -166,6 +167,8 @@ class _LoginPageState extends State<LoginPage> {
   }
 }
 
+
+/*
 class LoginField extends StatelessWidget {
   const LoginField({
     super.key,
@@ -228,6 +231,9 @@ class LoginField extends StatelessWidget {
     );
   }
 }
+*/
+
+
 
 
 /*
