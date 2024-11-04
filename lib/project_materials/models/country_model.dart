@@ -8,5 +8,6 @@ class CountryModel {
   CountryModel.fromJson(Map<String, dynamic> json) {
     id = json["id"];
     name = json["name"];
+    image = json['original_url'] ?? null;
   }
 }

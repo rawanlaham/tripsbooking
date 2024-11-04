@@ -32,12 +32,33 @@ class _HomePageState extends State<HomePage> {
     return response;
   }
 
+  Future<dynamic> getCountry() async {
+    // late final imageResponse;
+    try {
+      var response = await crud.getRequest(linkViewCountry);
+      List<dynamic> data = response['data'];
+      List<CountryModel> countries =
+          data.map((item) => CountryModel.fromJson(item)).toList();
+
+      // try {
+      //   imageResponse = await crud.getRequest(
+      //       "$linkViewCountryProfileImages/${widget.countryModel!.id}");
+      //   print("imageResponse        $imageResponse");
+      //   widget.countryModel!.image = 'https://i.ibb.co/JzkrC0j/ab-samra.png';
+      // } catch (e) {
+      //   print("getTripProfileImages Error is:        $e");
+      // }
+      return countries;
+    } catch (e) {
+      print("GetCountry error is: $e");
+    }
+    // return imageResponse;
+  }
+
+  /*
   Future<List<CountryModel>> getCountry() async {
     try {
       var response = await crud.getRequest(linkViewCountry);
-      // print(response["statusCode"]);
-      //"id": sharedPref.getString("id"), // to show the owned items
-      print('response is null ${response == null}');
       List<dynamic> data = response['data'];
       List<CountryModel> countries =
           data.map((item) => CountryModel.fromJson(item)).toList();
@@ -47,6 +68,7 @@ class _HomePageState extends State<HomePage> {
     }
     return [];
   }
+  */
 
   @override
   Widget build(BuildContext context) {
@@ -149,8 +171,6 @@ class _HomePageState extends State<HomePage> {
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(25),
                                     ),
-                                    // margin: const EdgeInsets.symmetric(
-                                    //     vertical: 8, horizontal: 8),
                                     child: ListTile(
                                       leading: const Icon(
                                         Icons.location_on,
@@ -199,6 +219,7 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
             FutureBuilder(
+              future: getCountry(),
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   List<CountryModel> countries = snapshot.data!;
@@ -228,7 +249,6 @@ class _HomePageState extends State<HomePage> {
                   child: Text("Is loading..."),
                 );
               },
-              future: getCountry(),
             ),
           ],
         ),

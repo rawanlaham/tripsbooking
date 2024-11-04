@@ -23,7 +23,9 @@ class CountryCard extends StatelessWidget {
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(15),
                 child: Image.asset(
+                  // child: Image.network(
                   "images/milan.webp",
+                  // "${countryModel.image}",
                   fit: BoxFit.fill,
                 ),
               ),

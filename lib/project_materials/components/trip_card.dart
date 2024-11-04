@@ -3,11 +3,9 @@ import 'package:project1v5/project_materials/models/trip_model.dart';
 
 class TripCard extends StatelessWidget {
   final TripModel? tripModel;
-  final OneTripModel? oneTripModel;
   const TripCard({
     super.key,
     this.tripModel,
-    this.oneTripModel,
   });
 
   @override
@@ -23,9 +21,9 @@ class TripCard extends StatelessWidget {
               ClipRRect(
                 borderRadius: BorderRadius.circular(15),
                 child: Image.asset(
-                  //tripListDetails[index]['image']!,
-                  "images/malaysia.jpg",
-                ),
+                    //tripListDetails[index]['image']!,
+                    // "images/malaysia.jpg",
+                    "${tripModel!.attributes!.image}"),
               ),
               Padding(
                 padding: const EdgeInsets.only(

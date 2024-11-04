@@ -28,15 +28,32 @@ class _CountryPageState extends State<CountryPage> {
 
   final List<Widget> pages = [HomePage(), AllCountries()];
 
-  // Future<dynamic> searchTrips(String data) async {
-  //   if (data.isEmpty) return;
+  Future<dynamic> getTripsForOneCountry() async {
+    late final imageResponse;
+    try {
+      var response = await crud
+          .getRequest("$linkViewTripsForOneCountry/${widget.countryModel!.id}");
+      try {
+        imageResponse = await crud
+            .getRequest("$linkViewTripProfileImages/${widget.tripModel!.id}");
+        print("imageResponse        $imageResponse");
+        widget.tripModel!.attributes!.image =
+            'https://i.ibb.co/JzkrC0j/ab-samra.png';
+      } catch (e) {
+        print("getTripProfileImages Error is:        $e");
+      }
+      List<dynamic> data = response['data'];
+      List<TripModel> trips =
+          data.map((item) => TripModel.fromJson(item)).toList();
 
-  //   var response = await crud.getRequest('$searchTrip?search=$data',
-  //       printResponse: true, queryParameters: {'search': data});
-  //   // print(response);
-  //   return response;
-  // }
+      return trips;
+    } catch (e) {
+      print("getTripsForOneCountry Error is:        $e");
+    }
+    return imageResponse;
+  }
 
+  /*
   Future<List<TripModel>> getTripsForOneCountry() async {
     try {
       var response = await crud
@@ -51,6 +68,7 @@ class _CountryPageState extends State<CountryPage> {
     }
     return [];
   }
+  */
 
   @override
   Widget build(BuildContext context) {
@@ -102,38 +120,6 @@ class _CountryPageState extends State<CountryPage> {
                 child: SingleChildScrollView(
                   child: Column(
                     children: [
-                      // SizedBox(
-                      //   width: 350,
-                      //   child: TextField(
-                      //     // onChanged: (t) {
-                      //     //   setState(() {});
-                      //     // },
-                      //     onSubmitted: (t) {
-                      //       setState(() {});
-                      //       // searchTrips('trip11');
-                      //     },
-                      //     //controller: searchController,
-                      //     decoration: InputDecoration(
-                      //         border: OutlineInputBorder(
-                      //             borderRadius: BorderRadius.circular(40)),
-                      //         filled: true,
-                      //         fillColor: Colors.white,
-                      //         hintText: "Where are you going?",
-                      //         hintStyle: const TextStyle(color: Colors.grey),
-                      //         prefixIcon: const Icon(Icons.search),
-                      //         prefixIconColor: Colors.black),
-                      //   ),
-                      // ),
-                      // if (searchHasData)
-                      //   ListView.separated(
-                      //       itemBuilder: (context, index) =>
-                      //           Text('snapshot.data[index]'),
-                      //       separatorBuilder: (context, index) =>
-                      //           const SizedBox(
-                      //             height: 1,
-                      //           ),
-                      //       itemCount: 1),
-
                       ListView.builder(
                         itemCount: trips.length,
                         shrinkWrap: true,

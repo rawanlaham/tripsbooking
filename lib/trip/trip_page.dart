@@ -22,55 +22,40 @@ class _TripPageState extends State<TripPage> {
   bool isLoading = false;
   bool imageLoading = false;
 
-  Future<List<TripModel>> getTripsDetails() async {
+  Future<dynamic> getTripsDetails() async {
+    late final imageResponse;
     try {
       var response =
           await crud.getRequest("$linkViewOneTrip/${widget.tripModel.id}");
       //"id": sharedPref.getString("id"), // to show the owned items
-
-      print(response['data'][0]);
       widget.tripModel = TripModel.fromJson(response['data'][0]);
+      // setState(() {
+      //   imageLoading = true;
+      // });
 
-      setState(() {
-        imageLoading = true;
-      });
       try {
-        var imageResponse =
+        imageResponse =
             await crud.getRequest("$linkViewTripImages/${widget.tripModel.id}");
-        setState(() {
-          imageLoading = false;
-        });
+        print(imageResponse);
+        //   setState(() {
+        //     imageLoading = false;
+        //   });
+        widget.tripModel.attributes!.image =
+            imageResponse['741e30c3-2e1c-4c5f-a4d0-d05fa0268192']
+                ['original_url'];
+        // widget.tripModel.attributes!.image =
+        //     'https://i.ibb.co/JzkrC0j/ab-samra.png';
       } catch (e) {
         print("getTripImages Error is:        $e");
       }
     } catch (e) {
       print("getTripsForOneCountry Error is:        $e");
     }
-    return [];
+    return imageResponse;
   }
-
-  Future<void> getTripImage() async {
-    try {
-      var response =
-          await crud.getRequest("$linkViewTripImages/${widget.tripModel.id}");
-    } catch (e) {
-      print("getTripImages Error is:        $e");
-    }
-  }
-
-  // Future<void> getTripImages() async {
-  //   try {
-  //     var request =
-  //         await crud.getRequest("linkViewTripImages/${widget.tripModel.id}");
-  //   } catch (e) {
-  //     print("getTripImages Error is:        $e");
-  //   }
-  // }
 
   @override
   Widget build(BuildContext context) {
-    // getTripsDetails();
-    // final String id = widget.tripModel.id!;
     return Scaffold(
         appBar: AppBar(
             //title: Text(widget.countryName)),
@@ -79,6 +64,8 @@ class _TripPageState extends State<TripPage> {
             future: getTripsDetails(),
             builder: (context, snapshot) {
               if (snapshot.hasData) {
+                print(
+                    'the image url: ---------- ${widget.tripModel.attributes?.image}');
                 return SingleChildScrollView(
                     padding: const EdgeInsets.all(16),
                     child: Column(
@@ -130,7 +117,6 @@ class _TripPageState extends State<TripPage> {
                                     "${widget.tripModel.attributes!.infantPrice} \$",
                               ),
                               TripInfo(
-                                /// need work
                                 description: "Avaiability",
                                 info:
                                     "${widget.tripModel.attributes!.avibality}",
@@ -139,41 +125,63 @@ class _TripPageState extends State<TripPage> {
                           ),
                         ),
                         const SizedBox(height: 20),
-                        // /*
-                        (imageLoading == true)
-                            ? const Center(child: CircularProgressIndicator())
-                            : SizedBox(
-                                height: 170,
-                                child: ListView.builder(
-                                  scrollDirection: Axis.horizontal,
-                                  itemCount: 1,
-                                  itemBuilder: (context, index) {
-                                    return Container(
-                                      padding: const EdgeInsets.only(left: 16),
-                                      decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(15)),
-                                      width: 250,
-                                      height: 150,
-                                      child: ClipRRect(
-                                        borderRadius: BorderRadius.circular(15),
-                                        child: ColorFiltered(
-                                          colorFilter: ColorFilter.mode(
-                                            Colors.black.withOpacity(0.3),
-                                            BlendMode.darken,
-                                          ),
-                                          child: Image.network(
-                                            widget.tripModel.attributes!
-                                                .image![index],
-                                            fit: BoxFit.fitWidth,
-                                          ),
-                                        ),
-                                      ),
-                                    );
-                                  },
-                                ),
+                        // (imageLoading == true)
+                        //     ? const Center(child: CircularProgressIndicator())
+                        //     :
+
+                        Container(
+                          padding: const EdgeInsets.only(left: 16),
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(15)),
+                          width: MediaQuery.of(context).size.width,
+                          height: 170,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(15),
+                            child: ColorFiltered(
+                              colorFilter: ColorFilter.mode(
+                                Colors.black.withOpacity(0.3),
+                                BlendMode.darken,
                               ),
-                        // */
+                              child: Image.network(
+                                "${widget.tripModel.attributes!.image}",
+                                //'https://bsmedia.business-standard.com/_media/bs/img/article/2023-04/17/full/1681718797-2692.jpg',
+                                fit: BoxFit.fitWidth,
+                              ),
+                            ),
+                          ),
+                        ),
+
+                        /*
+                        SizedBox(
+                          height: 170,
+                          child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: 1,
+                            itemBuilder: (context, index) {
+                              return Container(
+                                padding: const EdgeInsets.only(left: 16),
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(15)),
+                                width: 250,
+                                height: 150,
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(15),
+                                  child: ColorFiltered(
+                                    colorFilter: ColorFilter.mode(
+                                      Colors.black.withOpacity(0.3),
+                                      BlendMode.darken,
+                                    ),
+                                    child: Image.network(
+                                      'https://bsmedia.business-standard.com/_media/bs/img/article/2023-04/17/full/1681718797-2692.jpg',
+                                      fit: BoxFit.fitWidth,
+                                    ),
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                        */
                         const SizedBox(height: 20),
                         const Text(
                           "Features",

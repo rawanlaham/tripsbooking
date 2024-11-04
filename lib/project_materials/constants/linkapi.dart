@@ -17,6 +17,12 @@ const String linkViewOneTrip = "$baseUrl/api/trip";
 // Trip Images
 const String linkViewTripImages = "$baseUrl/api/tripImage";
 
+// Trip Profile Image
+const String linkViewTripProfileImages = "$baseUrl/api/getProfileImageForTrip";
+
+// Trip Profile Image
+const String linkViewCountryProfileImages = "$baseUrl/api/showCountryImage";
+
 // search trips
 const String searchTrip = '$baseUrl/api/searchTrips';
 
