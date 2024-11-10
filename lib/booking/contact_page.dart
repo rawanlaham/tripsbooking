@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:project1v5/booking/traveller_page.dart';
 import 'package:project1v5/project_materials/components/custom_form_field.dart';
 import 'package:project1v5/project_materials/constants/linkapi.dart';
 import 'package:project1v5/project_materials/crud.dart';
@@ -43,6 +44,11 @@ class _ContactPageState extends State<ContactPage> {
         setState(() {
           isLoading = false;
         });
+
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => TravellerPage(
+                  bookingModel: widget.bookingModel,
+                )));
       } catch (e, h) {
         print("sendContactData Error: $e + $h");
       }

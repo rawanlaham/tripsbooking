@@ -7,6 +7,7 @@ class BookingModel {
   int? numInfant;
   String? startDate;
   String? endDate;
+  // int? totalNumber;
 
   BookingModel({
     this.id,
@@ -17,6 +18,7 @@ class BookingModel {
     this.numInfant,
     this.startDate,
     this.endDate,
+    // this.totalNumber,
   });
 
   BookingModel.fromJson(Map<String, dynamic> json) {
@@ -45,9 +47,12 @@ class BookingModel {
     return data;
   }
 
+  // int get totalNumber {
+  //   return (numAdult ?? 0) + (numChild ?? 0) + (numInfant ?? 0);
+  // }
+
   @override
   String toString() {
-    // TODO: implement toString
     return '{id: $id, start_date: $startDate, end_date: $endDate}';
   }
 }

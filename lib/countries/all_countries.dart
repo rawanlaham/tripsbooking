@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:project1v5/booking/my_booking_page.dart';
+import 'package:project1v5/countries/country_page.dart';
 import 'package:project1v5/home_page.dart';
 import 'package:project1v5/project_materials/components/conutry_card.dart';
 import 'package:project1v5/project_materials/constants/linkapi.dart';
@@ -15,7 +17,11 @@ class AllCountries extends StatefulWidget {
 class _AllCountriesState extends State<AllCountries> {
   Crud crud = Crud();
   int currentIndex = 0;
-  final List<Widget> pages = [HomePage(), AllCountries()];
+  final List<Widget> pages = [
+    HomePage(),
+    AllCountries(),
+    MyBookingPage(),
+  ];
 
   Future<List<CountryModel>> getCountry() async {
     try {
@@ -53,6 +59,10 @@ class _AllCountriesState extends State<AllCountries> {
               Navigator.of(context).pushReplacement(
                   MaterialPageRoute(builder: (context) => AllCountries()));
               break;
+            case 2:
+              Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(builder: (context) => MyBookingPage()));
+              break;
           }
         },
         items: const [
@@ -66,6 +76,13 @@ class _AllCountriesState extends State<AllCountries> {
               color: Colors.teal,
             ),
             label: 'Countries',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.map,
+              color: Colors.teal,
+            ),
+            label: 'MyBookings',
           ),
         ],
       ),
@@ -83,8 +100,16 @@ class _AllCountriesState extends State<AllCountries> {
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
                       itemBuilder: (context, i) {
-                        return CountryCard(
-                          countryModel: countries[i],
+                        return GestureDetector(
+                          onTap: () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => CountryPage(
+                                      countryModel: countries[i],
+                                    )));
+                          },
+                          child: CountryCard(
+                            countryModel: countries[i],
+                          ),
                         );
                       });
                 }

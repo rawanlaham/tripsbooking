@@ -29,8 +29,14 @@ const String searchTrip = '$baseUrl/api/searchTrips';
 // Booking Data
 const String linkBookTrips = "$baseUrl/api/bookingTrip";
 
+// My Booking Data
+const String linkMyBookingData = "$baseUrl/api/userBooking";
+
 // Billing Data
 const String linkAddBillingData = "$baseUrl/api/addBillingDetails";
 
 // Contact Data
 const String linkAddContactData = "$baseUrl/api/addContactDetails";
+
+// Travellers Data
+const String linkAddTravellersData = "$baseUrl/api/addTravelers";

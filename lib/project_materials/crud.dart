@@ -4,7 +4,8 @@ import 'package:http/http.dart' as http;
 import 'package:project1v5/main.dart';
 
 class Crud {
-  getRequest(String uri,
+  /*
+  getRequest(String uri, //////worked
       {Map<String, dynamic>? queryParameters,
       bool printResponse = false}) async {
     try {
@@ -12,6 +13,39 @@ class Crud {
         print('url: ------------- $uri');
       }
       var response = await http.get(Uri.parse(uri));
+      if (response.statusCode == 200) {
+        var responseBody = jsonDecode(response.body);
+        if (printResponse)
+          print('url: $uri \n responseBody ----------------- ${responseBody}');
+        return responseBody;
+      } else {
+        print("Error ${response.statusCode}");
+      }
+    } catch (e) {
+      print("Error catch $e");
+    }
+  }
+  */
+
+  getRequest(String uri,
+      {Map<String, dynamic>? queryParameters,
+      bool printResponse = false}) async {
+    final token = sharedPref.getString("token");
+    if (token == null) {
+      print("No token found. Please try again");
+      return null;
+    }
+
+    final headers = {
+      'Authorization': 'Bearer $token',
+      'Accept': 'application/json',
+    };
+
+    try {
+      if (printResponse) {
+        print('url: ------------- $uri');
+      }
+      var response = await http.get(Uri.parse(uri), headers: headers);
       if (response.statusCode == 200) {
         var responseBody = jsonDecode(response.body);
         if (printResponse)

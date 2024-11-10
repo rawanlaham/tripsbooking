@@ -6,11 +6,15 @@ class LoginField extends StatelessWidget {
     required this.fieldEntry,
     required this.myController,
     required this.valid,
+    this.hint,
+    this.isPassword = false,
   });
 
   final String fieldEntry;
   final TextEditingController myController;
+  final bool? isPassword;
   final String? Function(String?) valid;
+  final String? hint;
 
   @override
   Widget build(BuildContext context) {
@@ -21,11 +25,13 @@ class LoginField extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(top: 20),
             child: TextFormField(
+              obscureText: isPassword!,
               validator: valid,
               controller: myController,
               decoration: InputDecoration(
                 filled: true,
                 fillColor: Colors.grey[100],
+                hintText: hint,
                 hintStyle: const TextStyle(
                   color: Colors.grey,
                 ),

@@ -1,5 +1,6 @@
 // /*
 import 'package:flutter/material.dart';
+import 'package:project1v5/booking/my_booking_page.dart';
 import 'package:project1v5/countries/all_countries.dart';
 import 'package:project1v5/home_page.dart';
 import 'package:project1v5/project_materials/components/trip_card.dart';
@@ -26,7 +27,11 @@ class _CountryPageState extends State<CountryPage> {
   int currentIndex = 0;
   bool searchHasData = false;
 
-  final List<Widget> pages = [HomePage(), AllCountries()];
+  final List<Widget> pages = [
+    HomePage(),
+    AllCountries(),
+    MyBookingPage(),
+  ];
 
   Future<dynamic> getTripsForOneCountry() async {
     late final imageResponse;
@@ -38,7 +43,7 @@ class _CountryPageState extends State<CountryPage> {
             .getRequest("$linkViewTripProfileImages/${widget.tripModel!.id}");
         print("imageResponse        $imageResponse");
         widget.tripModel!.attributes!.image =
-            'https://i.ibb.co/JzkrC0j/ab-samra.png';
+            'http://10.0.2.2:8000/storage/1/01JC17MBJYY1VYB53AR3WEA8PG.webp';
       } catch (e) {
         print("getTripProfileImages Error is:        $e");
       }
@@ -80,7 +85,8 @@ class _CountryPageState extends State<CountryPage> {
             List<TripModel> trips = snapshot.data!;
             return Scaffold(
               appBar: AppBar(
-                title: const Text("this is appBar!"),
+                title: Text("${widget.countryModel!.name}"),
+                backgroundColor: Colors.teal[50],
               ),
               bottomNavigationBar: BottomNavigationBar(
                 selectedLabelStyle: const TextStyle(fontSize: 14),
@@ -99,6 +105,10 @@ class _CountryPageState extends State<CountryPage> {
                       Navigator.of(context).pushReplacement(MaterialPageRoute(
                           builder: (context) => AllCountries()));
                       break;
+                    case 2:
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => MyBookingPage()));
+                      break;
                   }
                 },
                 items: const [
@@ -112,6 +122,10 @@ class _CountryPageState extends State<CountryPage> {
                       color: Colors.teal,
                     ),
                     label: 'Countries',
+                  ),
+                  BottomNavigationBarItem(
+                    icon: Icon(Icons.map, color: Colors.teal),
+                    label: 'MyBookings',
                   ),
                 ],
               ),

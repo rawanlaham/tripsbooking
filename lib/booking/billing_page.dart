@@ -9,13 +9,8 @@ import 'package:project1v5/project_materials/models/booking_model.dart';
 class BillingPage extends StatefulWidget {
   final BookingModel? bookingModel;
   BillingModel? billingModel;
-  // final int bookingId;
 
-  BillingPage(
-      {super.key,
-      // required this.bookingId,
-      this.bookingModel,
-      this.billingModel});
+  BillingPage({super.key, this.bookingModel, this.billingModel});
 
   @override
   State<BillingPage> createState() => _BillingPageState();
@@ -33,7 +28,7 @@ class _BillingPageState extends State<BillingPage> {
   bool isLoading = false;
   Crud crud = Crud();
 
-  Future<void> sendBookingData4() async {
+  Future<void> sendBillingData() async {
     // String? userId = sharedPref.getString("id");
     // String? token = sharedPref.getString("token");
     if (formstate.currentState!.validate()) {
@@ -48,27 +43,17 @@ class _BillingPageState extends State<BillingPage> {
           "phone_number": billingPhoneNumber.text,
           "email": billingEmail.text,
           "address": billingAddress.text,
-          // "booking_id": (widget.bookingModel!.id).toString()
         });
-        // print("Response: $response");
         setState(() {
           isLoading = false;
         });
 
-        /*
-        widget.billingModel = BillingModel.fromJson(response);
-        print("=============================== ${widget.billingModel!.id}");
-        Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => ContactPage(
-                  billingModel: widget.billingModel,
-                )));
-        */
         Navigator.of(context).push(MaterialPageRoute(
             builder: (context) => ContactPage(
                   bookingModel: widget.bookingModel,
                 )));
       } catch (e, h) {
-        print("sendBookingData Error: $e + $h");
+        print("sendBillingData Error: $e + $h");
       }
     }
   }
@@ -146,7 +131,7 @@ class _BillingPageState extends State<BillingPage> {
                       ),
                     ),
                     onPressed: () async {
-                      await sendBookingData4();
+                      await sendBillingData();
                     },
                     child: const Text(
                       "Submit",

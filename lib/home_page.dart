@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:project1v5/booking/my_booking_page.dart';
 import 'package:project1v5/countries/all_countries.dart';
 import 'package:project1v5/countries/country_page.dart';
 import 'package:project1v5/main.dart';
@@ -21,6 +22,7 @@ class _HomePageState extends State<HomePage> {
   final List<Widget> pages = [
     HomePage(),
     AllCountries(),
+    MyBookingPage(),
   ];
 
   Future<dynamic> searchTrips(String data) async {
@@ -33,26 +35,27 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<dynamic> getCountry() async {
-    // late final imageResponse;
+    late final imageResponse;
     try {
       var response = await crud.getRequest(linkViewCountry);
       List<dynamic> data = response['data'];
       List<CountryModel> countries =
           data.map((item) => CountryModel.fromJson(item)).toList();
 
-      // try {
-      //   imageResponse = await crud.getRequest(
-      //       "$linkViewCountryProfileImages/${widget.countryModel!.id}");
-      //   print("imageResponse        $imageResponse");
-      //   widget.countryModel!.image = 'https://i.ibb.co/JzkrC0j/ab-samra.png';
-      // } catch (e) {
-      //   print("getTripProfileImages Error is:        $e");
-      // }
+      try {
+        imageResponse = await crud.getRequest(
+            "$linkViewCountryProfileImages/${widget.countryModel!.id}");
+        print("imageResponse        $imageResponse");
+        widget.countryModel!.image =
+            'http://10.0.2.2:8000/storage/1/01JC17MBJYY1VYB53AR3WEA8PG.webp';
+      } catch (e) {
+        print("getCountryProfileImages Error is:        $e");
+      }
       return countries;
     } catch (e) {
       print("GetCountry error is: $e");
     }
-    // return imageResponse;
+    return imageResponse;
   }
 
   /*
@@ -101,6 +104,10 @@ class _HomePageState extends State<HomePage> {
               Navigator.of(context).push(
                   MaterialPageRoute(builder: (context) => AllCountries()));
               break;
+            case 2:
+              Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => MyBookingPage()));
+              break;
           }
         },
         items: const [
@@ -111,6 +118,10 @@ class _HomePageState extends State<HomePage> {
           BottomNavigationBarItem(
             icon: Icon(Icons.map, color: Colors.teal),
             label: 'Countries',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.map, color: Colors.teal),
+            label: 'MyBookings',
           ),
         ],
       ),
@@ -152,17 +163,11 @@ class _HomePageState extends State<HomePage> {
                     child: FutureBuilder(
                         future: searchTrips(searchController.text),
                         builder: (context, snapshot) {
-                          print(
-                              'SNAPSHOT DATA----------------- ${snapshot.data}');
                           if (snapshot.connectionState ==
                               ConnectionState.waiting) {
                             return const CircularProgressIndicator();
                           }
                           if (snapshot.hasData) {
-                            print(
-                                'SNAPSHOT DATA----------------- ${snapshot.data}');
-                            // return Text('found');
-                            // return Text();
                             return ListView.separated(
                                 // scrollDirection: Axi,
                                 shrinkWrap: true,

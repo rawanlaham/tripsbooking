@@ -20,10 +20,12 @@ class TripCard extends StatelessWidget {
             children: [
               ClipRRect(
                 borderRadius: BorderRadius.circular(15),
-                child: Image.asset(
-                    //tripListDetails[index]['image']!,
-                    // "images/malaysia.jpg",
-                    "${tripModel!.attributes!.image}"),
+                child: Image.network(
+                  //tripListDetails[index]['image']!,
+                  // "images/malaysia.jpg",
+                  // "${tripModel!.attributes!.image}"
+                  "http://10.0.2.2:8000/storage/1/01JC17MBJYY1VYB53AR3WEA8PG.webp",
+                ),
               ),
               Padding(
                 padding: const EdgeInsets.only(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:project1v5/main.dart';
+import 'package:project1v5/project_materials/components/login_field.dart';
 import 'package:project1v5/project_materials/constants/linkapi.dart';
 import 'package:project1v5/project_materials/crud.dart';
 import 'package:project1v5/project_materials/valid.dart';
@@ -34,7 +35,7 @@ class _SignUpPageState extends State<SignUpPage> {
         sharedPref.setString("id", response["data"]["id"].toString());
         sharedPref.setString("username", response["data"]["name"]);
         sharedPref.setString("email", response["data"]["email"]);
-        sharedPref.setString("token", response["access_token"]); // تخزين التوكن
+        sharedPref.setString("token", response["access_token"]);
         isLoading = false;
         setState(() {});
         Navigator.of(context).pushNamed("home");
@@ -65,14 +66,12 @@ class _SignUpPageState extends State<SignUpPage> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Container(
-                          child: Center(
-                            child: Image.asset(
-                              "images/handsHoldingMobile.jpg",
-                              width: 150,
-                              height: 150,
-                              fit: BoxFit.contain,
-                            ),
+                        Center(
+                          child: Image.asset(
+                            "images/handsHoldingMobile.jpg",
+                            width: 150,
+                            height: 150,
+                            fit: BoxFit.contain,
                           ),
                         ),
                         const Padding(
@@ -97,27 +96,31 @@ class _SignUpPageState extends State<SignUpPage> {
                             ),
                           ),
                         ),
-                        SignUpField(
-                            valid: (val) {
-                              return validInput(val!, 6, 20);
-                            },
-                            myController: username,
-                            fieldEntry: 'Full Name',
-                            hint: 'Mohammad Ahmad'),
-                        SignUpField(
-                            valid: (val) {
-                              return validInput(val!, 15, 40);
-                            },
-                            myController: email,
-                            fieldEntry: 'Email',
-                            hint: 'mohammad_ahmad@gmail.com'),
-                        SignUpField(
-                            valid: (val) {
-                              return validInput(val!, 6, 20);
-                            },
-                            myController: password,
-                            fieldEntry: 'Password',
-                            hint: 'mohammad_2001'),
+                        LoginField(
+                          fieldEntry: "Full Name",
+                          myController: username,
+                          hint: "Rawan Allaham",
+                          valid: (val) {
+                            return validInput(val!, 6, 20);
+                          },
+                        ),
+                        LoginField(
+                          fieldEntry: "Email",
+                          myController: email,
+                          hint: "rawanallaham@hotmail.com",
+                          valid: (val) {
+                            return validInput(val!, 15, 40);
+                          },
+                        ),
+                        LoginField(
+                          fieldEntry: "Password",
+                          isPassword: true,
+                          myController: password,
+                          hint: "Rawan@12",
+                          valid: (val) {
+                            return validInput(val!, 6, 20);
+                          },
+                        ),
                       ],
                     ),
                   ),
@@ -143,69 +146,6 @@ class _SignUpPageState extends State<SignUpPage> {
                 ],
               ),
             ),
-    );
-  }
-}
-
-class SignUpField extends StatelessWidget {
-  const SignUpField(
-      {super.key,
-      this.hint,
-      required this.fieldEntry,
-      required this.myController,
-      required this.valid});
-  final String? hint;
-  final String fieldEntry;
-  final TextEditingController myController;
-  final String? Function(String?) valid;
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Stack(
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(top: 20),
-            child: TextFormField(
-              validator: valid,
-              controller: myController,
-              decoration: InputDecoration(
-                filled: true,
-                fillColor: Colors.grey[100],
-                hintText: hint,
-                hintStyle: const TextStyle(
-                  color: Colors.grey,
-                ),
-                contentPadding: const EdgeInsets.all(15),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(15),
-                  borderSide: const BorderSide(color: Colors.grey),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                  borderSide: const BorderSide(color: Colors.grey),
-                ),
-              ),
-            ),
-          ),
-          Positioned(
-            top: 10.0,
-            left: 25.0,
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 4.0),
-              color: Colors.white,
-              child: Text(
-                fieldEntry,
-                style: const TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 14.0,
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
     );
   }
 }
