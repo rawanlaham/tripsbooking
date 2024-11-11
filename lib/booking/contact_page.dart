@@ -1,5 +1,5 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
-import 'package:project1v5/booking/traveller_page.dart';
 import 'package:project1v5/project_materials/components/custom_form_field.dart';
 import 'package:project1v5/project_materials/constants/linkapi.dart';
 import 'package:project1v5/project_materials/crud.dart';
@@ -45,10 +45,11 @@ class _ContactPageState extends State<ContactPage> {
           isLoading = false;
         });
 
-        Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => TravellerPage(
-                  bookingModel: widget.bookingModel,
-                )));
+        AwesomeDialog(
+                context: context,
+                title: 'Success',
+                body: const Text('you have successfully booked the trip!'))
+            .show();
       } catch (e, h) {
         print("sendContactData Error: $e + $h");
       }
@@ -81,16 +82,10 @@ class _ContactPageState extends State<ContactPage> {
                   CustomFormField(
                     fieldEntry: "First Name",
                     myController: contactFirstName,
-                    // valid: (val) {
-                    //   return validInput(val, min, max);
-                    // },
                   ),
                   CustomFormField(
                     fieldEntry: "Last Name",
                     myController: contactLastName,
-                    // valid: (val) {
-                    //   return validInput(val, min, max);
-                    // },
                   ),
                   CustomFormField(
                     fieldEntry: "Email",
@@ -99,16 +94,10 @@ class _ContactPageState extends State<ContactPage> {
                   CustomFormField(
                     fieldEntry: "Phone Number",
                     myController: contactPhoneNumber,
-                    // valid: (val) {
-                    //   return validInput(val, min, max);
-                    // },
                   ),
                   CustomFormField(
                     fieldEntry: "Address",
                     myController: contactAddress,
-                    // valid: (val) {
-                    //   return validInput(val, min, max);
-                    // },
                   ),
                 ],
               ),

@@ -47,7 +47,7 @@ class _HomePageState extends State<HomePage> {
             "$linkViewCountryProfileImages/${widget.countryModel!.id}");
         print("imageResponse        $imageResponse");
         widget.countryModel!.image =
-            'http://10.0.2.2:8000/storage/1/01JC17MBJYY1VYB53AR3WEA8PG.webp';
+            '$publishedBaseUrl/storage/4/01JCC3NE8462MS1R6518610TP1.jpg';
       } catch (e) {
         print("getCountryProfileImages Error is:        $e");
       }
@@ -57,21 +57,6 @@ class _HomePageState extends State<HomePage> {
     }
     return imageResponse;
   }
-
-  /*
-  Future<List<CountryModel>> getCountry() async {
-    try {
-      var response = await crud.getRequest(linkViewCountry);
-      List<dynamic> data = response['data'];
-      List<CountryModel> countries =
-          data.map((item) => CountryModel.fromJson(item)).toList();
-      return countries;
-    } catch (e) {
-      print("GetCountry error is: $e");
-    }
-    return [];
-  }
-  */
 
   @override
   Widget build(BuildContext context) {
@@ -238,6 +223,7 @@ class _HomePageState extends State<HomePage> {
                           Navigator.of(context).push(MaterialPageRoute(
                               builder: (context) => CountryPage(
                                     countryModel: countries[i],
+                                    // tripModel: ,
                                   )));
                         },
                         child: CountryCard(countryModel: countries[i]),

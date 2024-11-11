@@ -5,7 +5,6 @@ validInput(String val, int min, int max) {
     return "$messageInputMax $max letters";
   }
   if (val.isEmpty) {
-    //return const Text(messageInputEmpty);
     return messageInputEmpty;
   }
   if (val.length < min) {

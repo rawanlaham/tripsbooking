@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:project1v5/project_materials/constants/linkapi.dart';
 import 'package:project1v5/project_materials/models/trip_model.dart';
 
 class TripCard extends StatelessWidget {
@@ -21,11 +22,7 @@ class TripCard extends StatelessWidget {
               ClipRRect(
                 borderRadius: BorderRadius.circular(15),
                 child: Image.network(
-                  //tripListDetails[index]['image']!,
-                  // "images/malaysia.jpg",
-                  // "${tripModel!.attributes!.image}"
-                  "http://10.0.2.2:8000/storage/1/01JC17MBJYY1VYB53AR3WEA8PG.webp",
-                ),
+                    "$publishedBaseUrl/storage/2/01JC17MFZTA7JMVJ46V2WC3T4H.jpg"),
               ),
               Padding(
                 padding: const EdgeInsets.only(

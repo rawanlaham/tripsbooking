@@ -1,5 +1,6 @@
 const String linkServerName = "http://0.0.0.0";
-const String baseUrl = 'http://10.0.2.2:8000';
+const String baseUrl = 'http://192.168.1.105:8000';
+const String publishedBaseUrl = 'https://beb6-37-48-159-189.ngrok-free.app';
 
 // Auth
 const String linkSignUp = "$baseUrl/api/register";

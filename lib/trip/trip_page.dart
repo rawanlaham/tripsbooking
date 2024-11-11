@@ -27,27 +27,15 @@ class _TripPageState extends State<TripPage> {
     try {
       var response =
           await crud.getRequest("$linkViewOneTrip/${widget.tripModel.id}");
-      //"id": sharedPref.getString("id"), // to show the owned items
-      widget.tripModel = TripModel.fromJson(response['data'][0]);
-      // setState(() {
-      //   imageLoading = true;
-      // });
+      widget.tripModel = TripModel.fromJson(response['data']);
 
       try {
         imageResponse =
             await crud.getRequest("$linkViewTripImages/${widget.tripModel.id}");
         print(imageResponse);
-        //   setState(() {
-        //     imageLoading = false;
-        //   });
 
         widget.tripModel.attributes!.image =
-            "http://10.0.2.2:8000/storage/1/01JC17MBJYY1VYB53AR3WEA8PG.webp";
-
-        // widget.tripModel.attributes!.image = imageResponse['data']['url'];
-
-        // widget.tripModel.attributes!.image =
-        //     'https://i.ibb.co/JzkrC0j/ab-samra.png';
+            "$publishedBaseUrl/storage/1/01JC17MBJYY1VYB53AR3WEA8PG.webp";
       } catch (e) {
         print("getTripImages Error is:        $e");
       }
@@ -131,10 +119,6 @@ class _TripPageState extends State<TripPage> {
                             ),
                           ),
                           const SizedBox(height: 20),
-                          // (imageLoading == true)
-                          //     ? const Center(child: CircularProgressIndicator())
-                          //     :
-
                           Container(
                             padding: const EdgeInsets.only(left: 16),
                             decoration: BoxDecoration(
@@ -149,45 +133,12 @@ class _TripPageState extends State<TripPage> {
                                   BlendMode.darken,
                                 ),
                                 child: Image.network(
-                                  // "${widget.tripModel.attributes!.image}",
-                                  "http://10.0.2.2:8000/storage/1/01JC17MBJYY1VYB53AR3WEA8PG.webp",
+                                  "$publishedBaseUrl/storage/1/01JC17MBJYY1VYB53AR3WEA8PG.webp",
                                   fit: BoxFit.fitWidth,
                                 ),
                               ),
                             ),
                           ),
-
-                          /*
-                          SizedBox(
-                            height: 170,
-                            child: ListView.builder(
-                              scrollDirection: Axis.horizontal,
-                              itemCount: 1,
-                              itemBuilder: (context, index) {
-                                return Container(
-                                  padding: const EdgeInsets.only(left: 16),
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(15)),
-                                  width: 250,
-                                  height: 150,
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(15),
-                                    child: ColorFiltered(
-                                      colorFilter: ColorFilter.mode(
-                                        Colors.black.withOpacity(0.3),
-                                        BlendMode.darken,
-                                      ),
-                                      child: Image.network(
-                                        'https://bsmedia.business-standard.com/_media/bs/img/article/2023-04/17/full/1681718797-2692.jpg',
-                                        fit: BoxFit.fitWidth,
-                                      ),
-                                    ),
-                                  ),
-                                );
-                              },
-                            ),
-                          ),
-                          */
                           const SizedBox(height: 20),
                           const Text(
                             "Features",

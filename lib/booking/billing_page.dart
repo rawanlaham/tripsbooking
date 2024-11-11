@@ -29,8 +29,6 @@ class _BillingPageState extends State<BillingPage> {
   Crud crud = Crud();
 
   Future<void> sendBillingData() async {
-    // String? userId = sharedPref.getString("id");
-    // String? token = sharedPref.getString("token");
     if (formstate.currentState!.validate()) {
       setState(() {
         isLoading = true;
@@ -85,16 +83,10 @@ class _BillingPageState extends State<BillingPage> {
                     CustomFormField(
                       fieldEntry: "First Name",
                       myController: billingFirstName,
-                      // valid: (val) {
-                      //   return validInput(val, min, max);
-                      // },
                     ),
                     CustomFormField(
                       fieldEntry: "Last Name",
                       myController: billingLastName,
-                      // valid: (val) {
-                      //   return validInput(val, min, max);
-                      // },
                     ),
                     CustomFormField(
                       fieldEntry: "Email",
@@ -103,16 +95,10 @@ class _BillingPageState extends State<BillingPage> {
                     CustomFormField(
                       fieldEntry: "Phone Number",
                       myController: billingPhoneNumber,
-                      // valid: (val) {
-                      //   return validInput(val, min, max);
-                      // },
                     ),
                     CustomFormField(
                       fieldEntry: "Address",
                       myController: billingAddress,
-                      // valid: (val) {
-                      //   return validInput(val, min, max);
-                      // },
                     ),
                   ],
                 ),

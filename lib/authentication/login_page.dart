@@ -7,10 +7,8 @@ import 'package:project1v5/project_materials/crud.dart';
 import 'package:project1v5/project_materials/valid.dart';
 
 class LoginPage extends StatefulWidget {
-  // final UserModel? userModel;
   const LoginPage({
     super.key,
-    // this.userModel
   });
 
   @override
@@ -35,10 +33,8 @@ class _LoginPageState extends State<LoginPage> {
           "email": email.text,
           "password": password.text,
         });
-        //isLoading = true;
         isLoading = false;
         setState(() {});
-        // widget.userModel!.id = sharedPref.setString("id", response["data"]["id"].toString());
         sharedPref.setString("id", response["data"]["id"].toString());
         sharedPref.setString("username", response["data"]["name"]);
         sharedPref.setString("email", response["data"]["email"]);
