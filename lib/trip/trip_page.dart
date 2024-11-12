@@ -130,29 +130,6 @@ class _TripPageState extends State<TripPage> {
                             ),
                           ),
                           const SizedBox(height: 20),
-                          /*
-                          Container(
-                            padding: const EdgeInsets.only(left: 16),
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(15)),
-                            width: MediaQuery.of(context).size.width,
-                            height: 170,
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(15),
-                              child: ColorFiltered(
-                                colorFilter: ColorFilter.mode(
-                                  Colors.black.withOpacity(0.3),
-                                  BlendMode.darken,
-                                ),
-                                child: Image.network(
-                                  "$publishedBaseUrl/storage/1/01JC17MBJYY1VYB53AR3WEA8PG.webp",
-                                  fit: BoxFit.fitWidth,
-                                ),
-                              ),
-                            ),
-                          ),
-                          const SizedBox(height: 20),
-                          */
                           const Text(
                             "Features",
                             style: TextStyle(
