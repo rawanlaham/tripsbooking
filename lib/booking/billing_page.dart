@@ -63,74 +63,72 @@ class _BillingPageState extends State<BillingPage> {
         title: const Text("Billing Details"),
         backgroundColor: Colors.teal[50],
       ),
-      body: Center(
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Padding(
-                padding: EdgeInsets.all(16.0),
-                child: Text(
-                  'Please enter your billing details',
-                  textAlign: TextAlign.left,
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                ),
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Padding(
+              padding: EdgeInsets.all(16.0),
+              child: Text(
+                'Please enter your billing details',
+                textAlign: TextAlign.left,
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
-              Form(
-                key: formstate,
-                child: Column(
-                  children: [
-                    CustomFormField(
-                      fieldEntry: "First Name",
-                      myController: billingFirstName,
-                    ),
-                    CustomFormField(
-                      fieldEntry: "Last Name",
-                      myController: billingLastName,
-                    ),
-                    CustomFormField(
-                      fieldEntry: "Email",
-                      myController: billingEmail,
-                    ),
-                    CustomFormField(
-                      fieldEntry: "Phone Number",
-                      myController: billingPhoneNumber,
-                    ),
-                    CustomFormField(
-                      fieldEntry: "Address",
-                      myController: billingAddress,
-                    ),
-                  ],
-                ),
+            ),
+            Form(
+              key: formstate,
+              child: Column(
+                children: [
+                  CustomFormField(
+                    fieldEntry: "First Name",
+                    myController: billingFirstName,
+                  ),
+                  CustomFormField(
+                    fieldEntry: "Last Name",
+                    myController: billingLastName,
+                  ),
+                  CustomFormField(
+                    fieldEntry: "Email",
+                    myController: billingEmail,
+                  ),
+                  CustomFormField(
+                    fieldEntry: "Phone Number",
+                    myController: billingPhoneNumber,
+                  ),
+                  CustomFormField(
+                    fieldEntry: "Address",
+                    myController: billingAddress,
+                  ),
+                ],
               ),
-              Center(
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 16, bottom: 8),
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.teal,
-                      shadowColor: Colors.black,
-                      overlayColor: Colors.red,
-                      minimumSize: const Size(200, 50),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15),
-                      ),
+            ),
+            Center(
+              child: Padding(
+                padding: const EdgeInsets.only(top: 16, bottom: 8),
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.teal,
+                    shadowColor: Colors.black,
+                    overlayColor: Colors.red,
+                    minimumSize: const Size(200, 50),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15),
                     ),
-                    onPressed: () async {
-                      await sendBillingData();
-                    },
-                    child: const Text(
-                      "Submit",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 16,
-                      ),
+                  ),
+                  onPressed: () async {
+                    await sendBillingData();
+                  },
+                  child: const Text(
+                    "Submit",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 16,
                     ),
                   ),
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

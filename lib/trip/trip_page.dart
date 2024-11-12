@@ -23,6 +23,18 @@ class _TripPageState extends State<TripPage> {
   bool imageLoading = false;
 
   Future<dynamic> getTripsDetails() async {
+    try {
+      var response =
+          await crud.getRequest("$linkViewOneTrip/${widget.tripModel.id}");
+      widget.tripModel = TripModel.fromJson(response['data']);
+      return response;
+    } catch (e) {
+      print("getTripsForOneCountry Error is:        $e");
+    }
+  }
+
+  /*
+  Future<dynamic> getTripsDetails() async {
     late final imageResponse;
     try {
       var response =
@@ -32,10 +44,10 @@ class _TripPageState extends State<TripPage> {
       try {
         imageResponse =
             await crud.getRequest("$linkViewTripImages/${widget.tripModel.id}");
-        print(imageResponse);
+        // print(imageResponse);
 
-        widget.tripModel.attributes!.image =
-            "$publishedBaseUrl/storage/1/01JC17MBJYY1VYB53AR3WEA8PG.webp";
+        // widget.tripModel.attributes!.image =
+        //     "$publishedBaseUrl/storage/1/01JC17MBJYY1VYB53AR3WEA8PG.webp";
       } catch (e) {
         print("getTripImages Error is:        $e");
       }
@@ -44,6 +56,7 @@ class _TripPageState extends State<TripPage> {
     }
     return imageResponse;
   }
+  */
 
   @override
   Widget build(BuildContext context) {
@@ -52,8 +65,6 @@ class _TripPageState extends State<TripPage> {
             future: getTripsDetails(),
             builder: (context, snapshot) {
               if (snapshot.hasData) {
-                print(
-                    'the image url: ---------- ${widget.tripModel.attributes?.image}');
                 return Scaffold(
                   appBar: AppBar(
                     title: Text(widget.tripModel.attributes!.name),
@@ -119,6 +130,7 @@ class _TripPageState extends State<TripPage> {
                             ),
                           ),
                           const SizedBox(height: 20),
+                          /*
                           Container(
                             padding: const EdgeInsets.only(left: 16),
                             decoration: BoxDecoration(
@@ -140,6 +152,7 @@ class _TripPageState extends State<TripPage> {
                             ),
                           ),
                           const SizedBox(height: 20),
+                          */
                           const Text(
                             "Features",
                             style: TextStyle(
@@ -236,7 +249,7 @@ class _TripPageState extends State<TripPage> {
                                   const EdgeInsets.only(top: 16, bottom: 8),
                               child: MaterialButton(
                                 height: 50,
-                                color: Colors.redAccent[700],
+                                color: Colors.teal,
                                 onPressed: () {
                                   Navigator.of(context).push(MaterialPageRoute(
                                       builder: ((context) => BookingPage(

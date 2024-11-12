@@ -102,9 +102,7 @@ class _MyBookingPageState extends State<MyBookingPage> {
                             booking["trip"]["name"],
                             style: const TextStyle(fontWeight: FontWeight.bold),
                           ),
-                          subtitle: Text("Type: ${booking["trip"]["type"]}\n"
-                              "Booking ID: ${booking["booking_id"]}\n"
-                              "Date: ${booking["created_at"]}"),
+                          subtitle: Text("Type: ${booking["trip"]["type"]}"),
                           leading: const Icon(
                             Icons.circle,
                             color: Colors.black,

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:project1v5/project_materials/constants/linkapi.dart';
 import 'package:project1v5/project_materials/models/trip_model.dart';
 
 class TripCard extends StatelessWidget {
@@ -19,10 +18,12 @@ class TripCard extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(15),
-                child: Image.network(
-                    "$publishedBaseUrl/storage/2/01JC17MFZTA7JMVJ46V2WC3T4H.jpg"),
+              Container(
+                width: MediaQuery.of(context).size.width,
+                height: 150,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(15),
+                    color: Colors.teal[50]),
               ),
               Padding(
                 padding: const EdgeInsets.only(

@@ -33,18 +33,9 @@ class _CountryPageState extends State<CountryPage> {
   ];
 
   Future<dynamic> getTripsForOneCountry() async {
-    late final imageResponse;
-    print('widget.countryModel!.id ------------- : ${widget.countryModel!.id}');
     try {
       var response = await crud
           .getRequest("$linkViewTripsForOneCountry/${widget.countryModel!.id}");
-      try {
-        widget.tripModel!.attributes!.image =
-            '$publishedBaseUrl/storage/2/01JC17MFZTA7JMVJ46V2WC3T4H.jpg';
-      } catch (e, h) {
-        print("getTripProfileImages Error is:        $e \n $h");
-      }
-      print(response);
       List<dynamic> data = response['data'];
       List<TripModel> trips =
           data.map((item) => TripModel.fromJson(item)).toList();

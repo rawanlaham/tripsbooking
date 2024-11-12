@@ -98,116 +98,120 @@ class _BookingPageState extends State<BookingPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Booking Trip"),
+        backgroundColor: Colors.teal[50],
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              margin: const EdgeInsets.all(16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text(
-                    "Select Number of Participants",
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+      body:
+          // SingleChildScrollView(
+          //   child:
+          Column(
+        // crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          Container(
+            margin: const EdgeInsets.all(16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  "Select Number of Participants",
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 10),
+                Container(
+                  height: 100,
+                  decoration: BoxDecoration(
+                      color: Colors.grey[200],
+                      borderRadius: BorderRadius.circular(15)),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Text("Adult"),
+                          const SizedBox(height: 2),
+                          AgeDropDown(
+                            onChanged: (value) {
+                              setState(() {
+                                numAdults = int.parse(value);
+                              });
+                            },
+                          ),
+                        ],
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Text("Children"),
+                          const SizedBox(height: 2),
+                          AgeDropDown(
+                            onChanged: (value) {
+                              setState(() {
+                                numChildren = int.parse(value);
+                              });
+                            },
+                          ),
+                        ],
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Text("Infant"),
+                          const SizedBox(height: 2),
+                          AgeDropDown(
+                            onChanged: (value) {
+                              setState(() {
+                                numInfants = int.parse(value);
+                              });
+                            },
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
-                  const SizedBox(height: 10),
-                  Container(
-                    height: 100,
-                    decoration: BoxDecoration(
-                        color: Colors.grey[200],
-                        borderRadius: BorderRadius.circular(15)),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const Text("Adult"),
-                            const SizedBox(height: 2),
-                            AgeDropDown(
-                              onChanged: (value) {
-                                setState(() {
-                                  numAdults = int.parse(value);
-                                });
-                              },
-                            ),
-                          ],
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const Text("Children"),
-                            const SizedBox(height: 2),
-                            AgeDropDown(
-                              onChanged: (value) {
-                                setState(() {
-                                  numChildren = int.parse(value);
-                                });
-                              },
-                            ),
-                          ],
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const Text("Infant"),
-                            const SizedBox(height: 2),
-                            AgeDropDown(
-                              onChanged: (value) {
-                                setState(() {
-                                  numInfants = int.parse(value);
-                                });
-                              },
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 16),
+                  child: Text(
+                    "Total Price: ${totalPrice.toStringAsFixed(2)}\$",
+                    style: const TextStyle(
+                        fontSize: 20, fontWeight: FontWeight.bold),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 16),
-                    child: Text(
-                      "Total Price: ${totalPrice.toStringAsFixed(2)}\$",
-                      style: const TextStyle(
-                          fontSize: 20, fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
-            Center(
-              child: Padding(
-                padding: const EdgeInsets.only(top: 16, bottom: 8),
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.teal,
-                    shadowColor: Colors.black,
-                    minimumSize: const Size(200, 50),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15),
-                    ),
+          ),
+          Center(
+            child: Padding(
+              padding: const EdgeInsets.only(top: 16, bottom: 8),
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.teal,
+                  shadowColor: Colors.black,
+                  minimumSize: const Size(200, 50),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15),
                   ),
-                  onPressed: () async {
-                    await sendBookingData();
-                  },
-                  child: const Text(
-                    "Submit",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16,
-                    ),
+                ),
+                onPressed: () async {
+                  await sendBookingData();
+                },
+                child: const Text(
+                  "Submit",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 16,
                   ),
                 ),
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
+      // ),
     );
   }
 }

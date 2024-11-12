@@ -30,32 +30,19 @@ class _HomePageState extends State<HomePage> {
 
     var response = await crud.getRequest('$searchTrip?search=$data',
         printResponse: true, queryParameters: {'search': data});
-    // print(response);
     return response;
   }
 
   Future<dynamic> getCountry() async {
-    late final imageResponse;
     try {
       var response = await crud.getRequest(linkViewCountry);
       List<dynamic> data = response['data'];
       List<CountryModel> countries =
           data.map((item) => CountryModel.fromJson(item)).toList();
-
-      try {
-        imageResponse = await crud.getRequest(
-            "$linkViewCountryProfileImages/${widget.countryModel!.id}");
-        print("imageResponse        $imageResponse");
-        widget.countryModel!.image =
-            '$publishedBaseUrl/storage/4/01JCC3NE8462MS1R6518610TP1.jpg';
-      } catch (e) {
-        print("getCountryProfileImages Error is:        $e");
-      }
       return countries;
     } catch (e) {
       print("GetCountry error is: $e");
     }
-    return imageResponse;
   }
 
   @override
